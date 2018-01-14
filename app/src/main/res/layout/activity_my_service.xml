@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#d8e0e8"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="我的客服"
+        android:textSize="25dp"
+
+        android:background="#ff6666"
+        android:gravity="center"
+        android:fitsSystemWindows="true"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/MsgrecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </android.support.v7.widget.RecyclerView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText android:id="@+id/input_edit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="type something here"
+            android:maxLines="2"
+            android:layout_gravity="bottom"/>
+        <Button android:id="@+id/sendBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_radius"
+            android:layout_marginBottom="10dp"
+            android:text="Send"/>
+    </LinearLayout>
+</LinearLayout>
