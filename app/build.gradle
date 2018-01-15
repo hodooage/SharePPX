@@ -2,15 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        SharedPPX {
-            keyAlias '共享皮皮虾'
-            keyPassword 'zwj210zwj'
-            storeFile file('C:/Users/z1310_000/.android/Android_keystore/SharedPPX.jks')
-            storePassword 'zwj210zwj'
-        }
     }
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '26.0.2'
     defaultConfig {
         applicationId "com.example.z1310_000.sharedppx"
         minSdkVersion 17
@@ -18,16 +12,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.SharedPPX
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.SharedPPX
         }
         debug {
-            signingConfig signingConfigs.SharedPPX
         }
     }
     productFlavors {

@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SharedPPX.iml" filepath="$PROJECT_DIR$/SharedPPX.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SharePPX.iml" filepath="$PROJECT_DIR$/SharePPX.iml" />
+      <module fileurl="file://D:\Personal\Desktop\design\SharePPX\SharedPPX.iml" filepath="D:\Personal\Desktop\design\SharePPX\SharedPPX.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

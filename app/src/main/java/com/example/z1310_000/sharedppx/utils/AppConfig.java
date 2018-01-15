@@ -5,6 +5,6 @@ package com.example.z1310_000.sharedppx.utils;
  */
 
 public class  AppConfig {
-    public static String HOST = "139.196.121.201";
-    public static String PORT = "80";
+    public static String HOST = "192.168.1.202";
+    public static String PORT = "8080";
 }

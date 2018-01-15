@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <!--这里放页头-->
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="70dp"
@@ -23,12 +23,16 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center"
+                android:layout_toEndOf="@+id/tips"
                 android:src="@drawable/xia" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:text="共享皮皮虾"
                 android:textSize="30dp" />
@@ -49,7 +53,7 @@
                     android:text="当前存在正在骑行的订单，点击进入"/>
             </LinearLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <!--这里放地图-->
 
