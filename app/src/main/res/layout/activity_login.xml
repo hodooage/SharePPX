@@ -24,7 +24,7 @@
             android:textSize="25dp"
             android:fitsSystemWindows="true"/>
 
-        <ImageView
+        <ImageView android:id="@+id/href"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

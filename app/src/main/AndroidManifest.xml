@@ -41,7 +41,15 @@
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="6d120bcee555c6d8ee5579e809ac43bc" />
+            android:value="f1b1f9af4a152f2234527f6d06e549cf" />
+        <!--
+        笔记本的key
+        android:value="6d120bcee555c6d8ee5579e809ac43bc" />
+        -->
+        <!--
+        台式机的key
+        android:value="f1b1f9af4a152f2234527f6d06e549cf" />
+        -->
 
         <activity android:name=".activity.GetXiaActivity" />
         <activity android:name=".activity.ActivityCenterActivity" />
@@ -61,7 +69,8 @@
         </provider>
 
         <activity android:name=".activity.MyWalletActivity" />
-        <activity android:name=".activity.MyServiceActivity"></activity>
+        <activity android:name=".activity.MyServiceActivity" />
+        <activity android:name=".activity.TestActivity"></activity>
     </application>
 
 </manifest>
