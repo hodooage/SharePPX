@@ -1,12 +1,17 @@
 package com.example.z1310_000.sharedppx.activity;
 
+import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -96,10 +101,23 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
     //当前用户从表中取第一行数据
     private User nowUser= DataSupport.findFirst(User.class);
 
+    //请求权限的回调常量
+    public static  final  int MY_PERMISSIONS_REQUEST_READ_CONTACTS=1 ;
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        ActivityCompat.requestPermissions(this,new String[]{
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                },
+                MY_PERMISSIONS_REQUEST_READ_CONTACTS);
 
         //显示地图
         mapView = (MapView) findViewById(R.id.map);
