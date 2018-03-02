@@ -18,7 +18,7 @@ import org.litepal.crud.DataSupport;
 
 import cz.msebera.android.httpclient.Header;
 
-public class MyWalletActivity extends AppCompatActivity {
+public class MyWalletActivity extends BaseActivity {
 
     private TextView balance;
 
@@ -32,34 +32,17 @@ public class MyWalletActivity extends AppCompatActivity {
         initView();
         initData();
 
+
+
     }
 
     private void initView(){
-        balance= (TextView) findViewById(R.id.balance);
+        initToolbar("我的钱包");
 
     }
 
     private void initData(){
-        //检查当前账户余额是否足够
-        AsyncHttpClient RetrieveUserBalanceClient=new AsyncHttpClient();
-        RetrieveUserBalanceRequest retrieveUserBalanceRequest=new RetrieveUserBalanceRequest();
-        int uid=nowUser.getUid();
-        RetrieveUserBalanceClient.post(MyWalletActivity.this,retrieveUserBalanceRequest.getUrl(),retrieveUserBalanceRequest.getStringEntity(uid),"application/json",new JsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                super.onSuccess(statusCode, headers, response);
-                try {
-                    balance.setText(response.getString("balance"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                super.onFailure(statusCode, headers, responseString, throwable);
-            }
-        });
     }
 
     public static void startAction(Context context){

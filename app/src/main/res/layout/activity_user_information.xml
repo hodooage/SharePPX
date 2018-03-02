@@ -22,7 +22,7 @@
             <ImageButton android:id="@+id/returnBtn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:background="@drawable/left"
+                android:background="@drawable/left_f66"
                 android:scaleType="fitXY"
                 android:layout_alignParentLeft="true"/>
             <TextView

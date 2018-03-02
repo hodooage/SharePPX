@@ -15,14 +15,14 @@
         <RelativeLayout
             android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="@dimen/x33"
             android:layout_weight="1"
-            android:fitsSystemWindows="true"
-            android:background="#ff6666">
+            android:background="#ff6666"
+            android:fitsSystemWindows="true">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="@dimen/x33"
+                android:layout_height="@dimen/x33"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:layout_toEndOf="@+id/tips"
@@ -37,20 +37,23 @@
                 android:text="共享皮皮虾"
                 android:textSize="30dp" />
 
-            <LinearLayout android:id="@+id/tips"
+            <LinearLayout
+                android:id="@+id/tips"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_gravity="center"
+                android:orientation="horizontal"
                 android:visibility="gone">
+
                 <ImageButton
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/mark"/>
+                    android:background="@drawable/mark" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="当前存在正在骑行的订单，点击进入"/>
+                    android:text="当前存在正在骑行的订单，点击进入" />
             </LinearLayout>
 
         </RelativeLayout>

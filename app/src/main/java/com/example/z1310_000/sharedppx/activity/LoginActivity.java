@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 loginServer();
                 break;
             case  R.id.href:
-                TestActivity.startAction(this);
+                MyWalletActivity.startAction(this);
                 break;
         }
     }
