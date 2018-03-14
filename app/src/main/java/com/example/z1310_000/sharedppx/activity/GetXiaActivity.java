@@ -67,8 +67,8 @@ public class GetXiaActivity extends AppCompatActivity {
         type = (TextView) findViewById(R.id.type);
         price = (TextView) findViewById(R.id.price);
         ppxgo = (ImageButton) findViewById(R.id.ppxgo);
-        toMain= (ImageButton) findViewById(R.id.toMain);
     }
+
 
     private void initData(){
 

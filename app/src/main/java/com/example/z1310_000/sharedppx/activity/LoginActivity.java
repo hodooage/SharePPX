@@ -3,14 +3,20 @@ package com.example.z1310_000.sharedppx.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.databinding.Observable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
 import com.example.z1310_000.sharedppx.R;
 import com.example.z1310_000.sharedppx.databinding.ActivityLoginBinding;
+import com.example.z1310_000.sharedppx.entity.User;
 import com.example.z1310_000.sharedppx.service.UserService;
+import com.example.z1310_000.sharedppx.utils.Result;
+
+import org.litepal.crud.DataSupport;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -34,6 +40,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void initView() {
         mBinging = DataBindingUtil.setContentView(this,R.layout.activity_login);
+        DisplayMetrics metrics =new DisplayMetrics();
+/**
+ * getRealMetrics - 屏幕的原始尺寸，即包含状态栏。
+ * version >= 4.2.2
+ */
+        getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
+        System.out.println("屏幕的分辨率是："+width+"*"+height);
     }
 
     private void initListener(){
@@ -62,23 +77,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String password= String.valueOf(mBinging.password.getText());
         UserService userService=UserService.util.getUserService();
 
-        Call<ResponseBody> call=userService.userLogin(username,password);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<Result<User>> call=userService.userLogin(username,password);
+        call.enqueue(new Callback<Result<User>>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    mBinging.loginState.setText(response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Log.e(TAG, "onResponse: "+response.body().toString() );
+            public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
+                DataSupport.deleteAll(User.class);
+                Result<User> result=response.body();
+                User user=result.getData();
+                System.out.println(user.getUid());
+                System.out.println(user.toString());
+                user.save();
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                mBinging.loginState.setText(t.getLocalizedMessage());
+            public void onFailure(Call<Result<User>> call, Throwable t) {
+                System.out.println("请求失败");
             }
         });
+
     }
 
     public static void startAction(Context context){

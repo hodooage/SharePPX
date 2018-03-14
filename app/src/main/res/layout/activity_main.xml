@@ -1,194 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    tools:context="com.example.z1310_000.sharedppx.activity.MainActivity">
+    <data>
 
-    <RelativeLayout
+    </data>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <!--这里放页头-->
+
+        tools:context="com.example.z1310_000.sharedppx.activity.MainActivity">
+
         <RelativeLayout
-            android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/x33"
-            android:layout_weight="1"
-            android:background="#ff6666"
-            android:fitsSystemWindows="true">
-
-            <ImageView
-                android:layout_width="@dimen/x33"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--这里放页头-->
+            <RelativeLayout
+                android:id="@+id/title"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/x33"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_toEndOf="@+id/tips"
-                android:src="@drawable/xia" />
+                android:layout_weight="1"
+                android:background="#ff6666"
+                android:fitsSystemWindows="true">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:text="共享皮皮虾"
-                android:textSize="30dp" />
-
-            <LinearLayout
-                android:id="@+id/tips"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageButton
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/mark" />
+                <ImageView
+                    android:layout_width="@dimen/x33"
+                    android:layout_height="@dimen/x33"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_toEndOf="@+id/tips"
+                    android:src="@drawable/xia" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="当前存在正在骑行的订单，点击进入" />
-            </LinearLayout>
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:text="共享皮皮虾"
+                    android:textSize="30dp" />
 
-        </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
-        <!--这里放地图-->
+                    <ImageButton
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/mark" />
 
-        <com.amap.api.maps.MapView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/title"
-            />
-
-
-        <LinearLayout
-            android:id="@+id/items"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_weight="1"
-            android:background="#ff6666"
-            android:padding="5dp"
-            android:visibility="gone">
-
-            <!--<ImageButton
-
-                android:id="@+id/capture"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:src="@drawable/erweima" />
-
-            <ImageButton
-                android:id="@+id/alert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:src="@drawable/alarm" />
-
-            <ImageButton
-                android:id="@+id/userCenter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:src="@drawable/people" />-->
-
-            <ImageButton
-                android:id="@+id/activityCenter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:scaleType="fitXY"
-                android:src="@drawable/gift" />
-
-        </LinearLayout>
-
-
-        <!--这里放操作半圆菜单-->
-        <LinearLayout
-            android:id="@+id/menu"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:background="@drawable/halfcricle"
-            android:orientation="vertical"
-            android:layout_alignParentBottom="true"
-            >
-            <!--android:layout_alignParentBottom="true"-->
-            <!--向下箭头-->
-            <ImageButton android:id="@+id/down"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/down"
-                android:layout_gravity="center"/>
-
-
-            <ImageButton
-
-                android:id="@+id/capture"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/erweima"
-                android:layout_gravity="center"
-                android:background="#fff"
-                />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageButton
-                    android:id="@+id/userCenter"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/people"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="1dp"
-                    android:background="#fff"
-                    />
-
-                <ImageButton
-                    android:id="@+id/alert"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/alarm"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="1dp"
-                    android:background="#fff"
-                    />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="当前存在正在骑行的订单，点击进入" />
+                </LinearLayout>
 
             </RelativeLayout>
 
+            <!--这里放地图-->
+
+            <com.amap.api.maps.MapView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/title" />
 
 
-        </LinearLayout>
-        <RelativeLayout
-            android:id="@+id/showMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_alignParentBottom="true"
-            android:visibility="gone">
-            <ImageButton android:id="@+id/top"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/items"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_weight="1"
+                android:background="#ff6666"
+                android:padding="5dp"
+                android:visibility="gone">
+
+                <!--<ImageButton
+
+                    android:id="@+id/capture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/erweima" />
+
+                <ImageButton
+                    android:id="@+id/alert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/alarm" />
+
+                <ImageButton
+                    android:id="@+id/userCenter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/people" />-->
+
+                <ImageButton
+                    android:id="@+id/activityCenter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/gift" />
+
+            </LinearLayout>
+
+
+            <!--这里放操作半圆菜单-->
+            <LinearLayout
+                android:id="@+id/menu"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/halfcricle"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true">
+                <!--android:layout_alignParentBottom="true"-->
+                <!--向下箭头-->
+                <ImageButton
+                    android:id="@+id/down"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/down"
+                    android:layout_gravity="center" />
+
+
+                <ImageButton
+
+                    android:id="@+id/capture"
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/erweima"
+                    android:layout_gravity="center"
+                    android:background="#fff" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/userCenter"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/people"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginBottom="1dp"
+                        android:background="#fff" />
+
+                    <ImageButton
+                        android:id="@+id/alert"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/alarm"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="1dp"
+                        android:background="#fff" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/showMenu"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/top"
-                />
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:visibility="gone">
 
+                <ImageButton
+                    android:id="@+id/top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/top" />
+
+            </RelativeLayout>
         </RelativeLayout>
-    </RelativeLayout>
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -99,7 +99,7 @@ public class CountTimeActivity extends AppCompatActivity {
         countTime = (Chronometer) findViewById(R.id.countTime);
         stopDriveXia = (Button) findViewById(R.id.stopDriveXia);
         toMain= (Button) findViewById(R.id.toMain);
-        returnMain= (ImageButton) findViewById(R.id.returnMain);
+        returnMain= (ImageButton) findViewById(R.id.close);
         //电子字体
         Typeface typeface=Typeface.createFromAsset(getAssets(),"fonts/elecnum.TTF");
         xiaId.setTypeface(typeface);

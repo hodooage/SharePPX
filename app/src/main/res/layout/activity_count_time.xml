@@ -13,29 +13,15 @@
 
         android:orientation="vertical">
 
-        <!--页头-->
         <RelativeLayout
-            android:id="@+id/title"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:background="#ff6666"
-            android:layout_gravity="center"
-            android:fitsSystemWindows="true">
+            android:layout_height="@dimen/x33"
+            android:id="@+id/relativeLayout">
+            <include layout="@layout/toolbarlayout"></include>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="当前订单"
-                android:layout_centerHorizontal="true"
-                android:textSize="30dp" />
-            <ImageButton android:id="@+id/returnMain"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:scaleType="fitXY"
-                android:background="@drawable/x"
-                android:layout_marginTop="5dp"
-                android:layout_alignParentRight="true"/>
+
         </RelativeLayout>
+        <!--页头-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

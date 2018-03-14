@@ -1,6 +1,7 @@
 package com.example.z1310_000.sharedppx.service;
 
 import com.example.z1310_000.sharedppx.entity.User;
+import com.example.z1310_000.sharedppx.utils.Result;
 import com.example.z1310_000.sharedppx.utils.RetrofitUtil;
 
 import okhttp3.ResponseBody;
@@ -20,8 +21,10 @@ public interface UserService {
     Call<ResponseBody> getString();
 
     @POST("userLogin")
-    Call<ResponseBody> userLogin(@Query("username") String username, @Query("password") String password);
+    Call<Result<User>> userLogin(@Query("username") String username, @Query("password") String password);
 
+    @GET("retrieveUserBalance")
+    Call<Result<Float>> retrieveUserBalance(@Query("userId")int userId);
 
     class util{
         public util(){
@@ -31,4 +34,6 @@ public interface UserService {
            return RetrofitUtil.getRetrofit().create(UserService.class);
         }
     }
+
+
 }

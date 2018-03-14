@@ -5,15 +5,12 @@
     android:orientation="vertical"
     android:background="#d8e0e8"
     >
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:text="我的客服"
-        android:textSize="25dp"
-
-        android:background="#ff6666"
-        android:gravity="center"
-        android:fitsSystemWindows="true"/>
+        android:layout_height="@dimen/x33"
+        android:id="@+id/relativeLayout">
+        <include layout="@layout/toolbarlayout"></include>
+    </RelativeLayout>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/MsgrecyclerView"
         android:layout_width="match_parent"

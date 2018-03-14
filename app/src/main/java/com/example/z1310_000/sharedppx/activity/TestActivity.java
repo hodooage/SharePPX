@@ -12,8 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.z1310_000.sharedppx.R;
+import com.example.z1310_000.sharedppx.entity.User;
 import com.example.z1310_000.sharedppx.service.UserService;
 import com.example.z1310_000.sharedppx.utils.AppConfig;
+import com.example.z1310_000.sharedppx.utils.Result;
 
 import java.io.IOException;
 
@@ -56,24 +58,20 @@ public class TestActivity extends AppCompatActivity {
                 .baseUrl(AppConfig.URL_BASE)
                 .build();
         UserService userService=retrofit.create(UserService.class);
-        Call<ResponseBody> call = userService.userLogin("qqq","123");
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<Result<User>> call = userService.userLogin("qqq","123");
+        call.enqueue(new Callback<Result<User>>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.e(TAG, "success: "+call);
-                try {
-                    textView.setText(response.body().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                Toast.makeText(TestActivity.this, response.body().toString(), Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
+                textView.setText(response.body().toString());
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e(TAG, "onFailure: " );
+            public void onFailure(Call<Result<User>> call, Throwable t) {
+
             }
         });
+
+
     }
 
     public static void startAction(Context context){

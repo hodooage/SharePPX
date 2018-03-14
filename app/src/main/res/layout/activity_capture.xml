@@ -21,6 +21,12 @@
             android:layout_height="130dp"
             android:layout_alignParentTop="true"
             android:background="@drawable/shadow" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x33"
+            android:id="@+id/relativeLayout">
+            <include layout="@layout/toolbarlayout"></include>
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/capture_crop_view"
@@ -48,6 +54,15 @@
             android:layout_alignParentBottom="true"
             android:layout_below="@id/capture_crop_view"
             android:background="@drawable/shadow" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="对准二维码扫描即可"
+            android:layout_marginTop="@dimen/x33"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textSize="@dimen/x12"
+            android:layout_below="@id/capture_crop_view"/>
 
         <ImageView
             android:id="@+id/capture_mask_left"

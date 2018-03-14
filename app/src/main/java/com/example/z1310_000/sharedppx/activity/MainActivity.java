@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Build;
@@ -44,6 +45,7 @@ import com.amap.api.services.route.RouteSearch;
 import com.amap.api.services.route.WalkPath;
 import com.amap.api.services.route.WalkRouteResult;
 import com.example.z1310_000.sharedppx.R;
+import com.example.z1310_000.sharedppx.databinding.ActivityMainBinding;
 import com.example.z1310_000.sharedppx.entity.User;
 import com.example.z1310_000.sharedppx.overlay.WalkRouteOverlay;
 import com.example.z1310_000.sharedppx.request.GetUseRecordRequest;
@@ -68,6 +70,8 @@ import cz.msebera.android.httpclient.Header;
 
 //监听定位和定位变化
 public class MainActivity extends AppCompatActivity implements LocationSource, AMapLocationListener {
+    private ActivityMainBinding mBinding;
+
     private MarkerOptions nowPosition;
 
     private AsyncHttpClient client = new AsyncHttpClient();
@@ -161,6 +165,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
 
     //初始化界面,给按钮注册监听事件
     private void initView() {
+        mBinding=DataBindingUtil.setContentView(this,R.layout.activity_main);
+
         capture = (ImageButton) findViewById(R.id.capture);
         capture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,6 +233,9 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         });
     }
 
+    private void initListener(){
+
+    }
 
 
     //定位
