@@ -46,8 +46,7 @@ public class MyWalletActivity extends BaseActivity {
     }
 
     private void initView(){
-        initToolbar();
-        setToolbarTitle("我的钱包");
+        initToolbar("我的钱包");
     }
 
     private void initData(){
@@ -59,7 +58,7 @@ public class MyWalletActivity extends BaseActivity {
             public void onResponse(Call<Result<Float>> call, retrofit2.Response<Result<Float>> response) {
                 Result<Float> result=response.body();
                 Float mBalance=result.getData();
-                //mBinding.balance.setText(String.valueOf(mBalance));
+                mBinding.balance.setText(String.valueOf(mBalance));
             }
 
             @Override

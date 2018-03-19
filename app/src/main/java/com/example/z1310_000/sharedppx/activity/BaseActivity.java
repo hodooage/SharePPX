@@ -18,8 +18,11 @@ public class BaseActivity extends AppCompatActivity {
     TextView mToolbarTitle;
     ImageButton returnLast,close;
 
-    public void initToolbar(){
+    public void initToolbar(String title){
         mToolbar=findViewById(R.id.mToolbar);
+        returnLast=findViewById(R.id.returnLast);
+        close=findViewById(R.id.close);
+        setToolbarTitle(title);
     }
 
 
@@ -28,7 +31,7 @@ public class BaseActivity extends AppCompatActivity {
             mToolbarTitle = mToolbar.findViewById(R.id.activity_title);
             mToolbarTitle.setVisibility(View.VISIBLE);
             mToolbarTitle.setText(title);
-            Toast.makeText(this, "are you ojbk?", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "are you ojbk?", Toast.LENGTH_SHORT).show();
             setToolbarListener();
         }
 

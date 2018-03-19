@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 loginServer();
                 break;
             case  R.id.href:
-                MyWalletActivity.startAction(this);
+                UserCenterActivity.startAction(this);
                 break;
         }
     }

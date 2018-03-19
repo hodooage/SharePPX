@@ -1,6 +1,8 @@
 package com.example.z1310_000.sharedppx.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.z1310_000.sharedppx.R;
+import com.example.z1310_000.sharedppx.databinding.ActivityUserCenterBinding;
 import com.example.z1310_000.sharedppx.entity.User;
 
 import org.litepal.crud.DataSupport;
@@ -32,6 +35,8 @@ import org.litepal.crud.DataSupport;
 import java.io.File;
 
 public class UserCenterActivity extends AppCompatActivity {
+    private ActivityUserCenterBinding mBinding;
+
     private ImageButton exit, userImage;
 
     private LinearLayout myRouter,myWallet,invertFriend,exchangeCoupon,myService;
@@ -41,7 +46,7 @@ public class UserCenterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_center);
+        mBinding= DataBindingUtil.setContentView(this,R.layout.activity_user_center);
         initView();
         initData();
         initListener();
@@ -64,7 +69,7 @@ public class UserCenterActivity extends AppCompatActivity {
     }
 
     private void initListener() {
-        exit.setOnClickListener(new View.OnClickListener() {
+        mBinding.exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -87,30 +92,35 @@ public class UserCenterActivity extends AppCompatActivity {
 
                     }
                 });
-                exit.startAnimation(animation);
+                mBinding.exit.startAnimation(animation);
 
             }
         });
-        userImage.setOnClickListener(new View.OnClickListener() {
+        mBinding.userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 UserInformationActivity.startAction(UserCenterActivity.this);
             }
         });
 
-        myWallet.setOnClickListener(new View.OnClickListener() {
+        mBinding.myWallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MyWalletActivity.startAction(UserCenterActivity.this);
             }
         });
 
-        myService.setOnClickListener(new View.OnClickListener() {
+        mBinding.myService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 MyServiceActivity.startAction(UserCenterActivity.this);
             }
         });
+    }
+
+    public static  void startAction(Context context){
+        Intent intent=new Intent(context,UserCenterActivity.class);
+        context.startActivity(intent);
     }
 
 }
