@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.z1310_000.sharedppx.R;
@@ -46,6 +47,7 @@ public class MyWalletActivity extends BaseActivity {
     }
 
     private void initView(){
+
         initToolbar("我的钱包");
     }
 

@@ -2,6 +2,7 @@ package com.example.z1310_000.sharedppx.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ public class BaseActivity extends AppCompatActivity {
     ImageButton returnLast,close;
 
     public void initToolbar(String title){
+
         mToolbar=findViewById(R.id.mToolbar);
         returnLast=findViewById(R.id.returnLast);
         close=findViewById(R.id.close);
@@ -33,6 +35,8 @@ public class BaseActivity extends AppCompatActivity {
             mToolbarTitle.setText(title);
             //Toast.makeText(this, "are you ojbk?", Toast.LENGTH_SHORT).show();
             setToolbarListener();
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
     }

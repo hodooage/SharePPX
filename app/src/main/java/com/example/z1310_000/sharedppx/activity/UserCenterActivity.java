@@ -4,16 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,47 +17,55 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.z1310_000.sharedppx.R;
 import com.example.z1310_000.sharedppx.databinding.ActivityUserCenterBinding;
 import com.example.z1310_000.sharedppx.entity.User;
+import com.example.z1310_000.sharedppx.utils.GetBitmapForUrl;
 
 import org.litepal.crud.DataSupport;
 
 import java.io.File;
+import java.io.IOException;
 
 public class UserCenterActivity extends AppCompatActivity {
     private ActivityUserCenterBinding mBinding;
-
-    private ImageButton exit, userImage;
-
-    private LinearLayout myRouter,myWallet,invertFriend,exchangeCoupon,myService;
-
-    private TextView phonenum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding= DataBindingUtil.setContentView(this,R.layout.activity_user_center);
-        initView();
         initData();
         initListener();
     }
 
-    private void initView() {
-        exit = (ImageButton) findViewById(R.id.exit);
-        userImage = (ImageButton) findViewById(R.id.userImage);
-        myRouter= (LinearLayout) findViewById(R.id.myRouter);
-        myWallet= (LinearLayout) findViewById(R.id.myWallet);
-        invertFriend= (LinearLayout) findViewById(R.id.invertFriend);
-        exchangeCoupon= (LinearLayout) findViewById(R.id.invertFriend);
-        myService= (LinearLayout) findViewById(R.id.myService);
-
-        phonenum= (TextView) findViewById(R.id.phonenum);
-    }
-
     private void initData() {
-        phonenum.setText(DataSupport.findFirst(User.class).getPhonenum());
+        User user=DataSupport.findFirst(User.class);
+        //这么一大段，还不如用glide省事，一句话搞定
+//        new Thread() {
+//            public void run() {
+//                //这儿是耗时操作，完成之后更新UI；
+//                try {
+//                    runOnUiThread(new Runnable(){
+//                        User user=DataSupport.findFirst(User.class);
+//                        Bitmap bitmap= GetBitmapForUrl.getBitmap(user.getImage());
+//                        @Override
+//                        public void run() {
+//                            //更新UI
+//                            mBinding.userImage.setImageBitmap(bitmap);
+//                        }
+//
+//                    });
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }.start();
+//           Glide.with(this)
+//                    .load(user.getImage())
+//                   //.apply(bitmapTransform(new CropCircleTransformation(this)))
+//                    .into(mBinding.userImage);
+
+        mBinding.phonenum.setText(user.getPhonenum());
     }
 
     private void initListener() {

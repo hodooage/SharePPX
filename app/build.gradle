@@ -24,6 +24,7 @@ android {
         enabled = true
     }
 
+
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
     buildTypes {
@@ -45,12 +46,12 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile files('libs/android-async-http-1.4.9.jar')
-    compile files('libs/httpclient-4.3.6.jar')
     compile files('libs/AMap3DMap_5.3.0_AMapNavi_5.3.0_AMapSearch_5.3.1_AMapLocation_3.5.0_20170817.jar')
     compile files('libs/core-3.1.0.jar')
 
     //noinspection GradleCompatible
+    compile 'com.android.support:support-v4:26.+'
+
     compile 'com.android.support:appcompat-v7:26.+'
 
     compile 'com.android.support:recyclerview-v7:26.+'
@@ -66,4 +67,10 @@ dependencies {
     implementation 'com.android.support:cardview-v7:26.1.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    //图片加载库
+    //compile 'com.github.bumptech.glide:glide:4.6.1'
+//    //图片处理库
+//    compile 'jp.wasabeef:glide-transformations:2.0.0'
+//    //图片选择库
+//    compile 'com.lzy.widget:imagepicker:0.6.1'
 }

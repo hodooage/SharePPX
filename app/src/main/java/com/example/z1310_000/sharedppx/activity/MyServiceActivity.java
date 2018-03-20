@@ -26,7 +26,7 @@ import com.example.z1310_000.sharedppx.entity.Msg;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyServiceActivity extends AppCompatActivity {
+public class MyServiceActivity extends BaseActivity {
     private List<Msg> msgs=new ArrayList<>();
     private EditText input_edit;
     private Button sendBtn;
@@ -39,6 +39,8 @@ public class MyServiceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_service);
+
+        initToolbar("联系客服");
 
         initMsgs();
 

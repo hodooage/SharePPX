@@ -26,35 +26,19 @@ import java.io.IOException;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "LoginActivity";
-    private ActivityLoginBinding mBinging;
+    private ActivityLoginBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        initView();
-
+        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_login);
         initListener();
     }
 
-    private void initView() {
-        mBinging = DataBindingUtil.setContentView(this,R.layout.activity_login);
-        DisplayMetrics metrics =new DisplayMetrics();
-/**
- * getRealMetrics - 屏幕的原始尺寸，即包含状态栏。
- * version >= 4.2.2
- */
-        getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
-        System.out.println("屏幕的分辨率是："+width+"*"+height);
-    }
-
     private void initListener(){
-        mBinging.registerbtn.setOnClickListener(this);
-        mBinging.loginbtn.setOnClickListener(this);
-        mBinging.href.setOnClickListener(this);
+        mBinding.registerbtn.setOnClickListener(this);
+        mBinding.loginbtn.setOnClickListener(this);
+        mBinding.href.setOnClickListener(this);
     }
 
     @Override
@@ -73,14 +57,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void loginServer() {
-        String username= String.valueOf(mBinging.username.getText());
-        String password= String.valueOf(mBinging.password.getText());
+        String username= String.valueOf(mBinding.username.getText());
+        String password= String.valueOf(mBinding.password.getText());
         UserService userService=UserService.util.getUserService();
 
         Call<Result<User>> call=userService.userLogin(username,password);
         call.enqueue(new Callback<Result<User>>() {
             @Override
             public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
+                //清除之前的用户信息
                 DataSupport.deleteAll(User.class);
                 Result<User> result=response.body();
                 User user=result.getData();
