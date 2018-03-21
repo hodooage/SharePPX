@@ -114,15 +114,6 @@ public class MainActivity extends AppCompatActivity implements LocationSource, A
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        ActivityCompat.requestPermissions(this,new String[]{
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.CAMERA,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-                },
-                MY_PERMISSIONS_REQUEST_READ_CONTACTS);
-
         //显示地图
         mapView = (MapView) findViewById(R.id.map);
         //必须要写

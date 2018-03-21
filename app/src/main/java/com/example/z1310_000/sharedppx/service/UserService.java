@@ -4,10 +4,13 @@ import com.example.z1310_000.sharedppx.entity.User;
 import com.example.z1310_000.sharedppx.utils.Result;
 import com.example.z1310_000.sharedppx.utils.RetrofitUtil;
 
+import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -25,6 +28,15 @@ public interface UserService {
 
     @GET("retrieveUserBalance")
     Call<Result<Float>> retrieveUserBalance(@Query("userId")int userId);
+
+    @Multipart
+    @POST("uploadImage")
+    Call<ResponseBody> uploadImage(@Query("userId") int userId, @Part MultipartBody.Part file);
+
+
+
+
+
 
     class util{
         public util(){

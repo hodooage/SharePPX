@@ -26,7 +26,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity android:name=".activity.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".activity.AlertActivity" />
         <activity android:name=".activity.MainActivity" />
@@ -49,13 +53,7 @@
 
         <activity android:name=".activity.GetXiaActivity" />
         <activity android:name=".activity.ActivityCenterActivity" />
-        <activity android:name=".activity.UserCenterActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".activity.UserCenterActivity" />
         <activity android:name=".activity.ErrorActivity" />
         <activity android:name=".activity.UserInformationActivity" />
         <activity android:name=".activity.CountTimeActivity" />

@@ -1,247 +1,249 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.z1310_000.sharedppx.activity.UserInformationActivity">
-    <!--整个页面-->
-    <LinearLayout
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp">
+        tools:context="com.example.z1310_000.sharedppx.activity.UserInformationActivity">
         <!--title-->
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-
-            android:fitsSystemWindows="true"
-            >
-            <ImageButton android:id="@+id/returnBtn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/left_f66"
-                android:scaleType="fitXY"
-                android:layout_alignParentLeft="true"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="个人信息"
-                android:textSize="25dp"
-                android:layout_alignLeft="@id/registerbtn"
-                android:paddingLeft="130dp"/>
-            <ImageButton
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/setting"
-                android:layout_gravity="right"
-                android:layout_alignParentRight="true"/>
+            android:layout_height="@dimen/x33"
+            android:id="@+id/relativeLayout">
+            <include layout="@layout/toolbarlayout"></include>
         </RelativeLayout>
-        <!--昵称和头像-->
-        <RelativeLayout
+        <!--整个页面-->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            >
-            <LinearLayout
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/relativeLayout"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/x5">
+            <!--昵称和头像-->
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
-                <TextView android:id="@+id/nickName"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/nickName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="30dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
                     android:text="我是昵称"
-                    android:layout_centerInParent="true"
-                    />
-                <Button
-                    android:layout_width="wrap_content"
+                    android:textSize="30dp" />
+
+                <ImageButton
+                    android:id="@+id/userImage"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/userimagecircle"
+                    android:padding="5dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/dog" />
+            </RelativeLayout>
+
+            <!--分隔线-->
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#FF909090" />
+
+            <!--昵称等等等-->
+            <LinearLayout
+                android:id="@+id/information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!--昵称-->
+                <RelativeLayout
+                    android:id="@+id/itemNickName"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="信用分 100  >"
-                    android:background="#fff"/>
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="昵称"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/userNickName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="小猫咪>"
+                        android:textColor="#ff6666"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+                <!--分隔线-->
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#FF909090" />
+                <!--性别-->
+                <RelativeLayout
+                    android:id="@+id/itemSex"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="性别"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/userSex"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="小猫咪>"
+                        android:textColor="#ff6666"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+                <!--分隔线-->
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#FF909090" />
+                <!--生日-->
+                <RelativeLayout
+                    android:id="@+id/itemBirthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="生日"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/userBirthday"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="小猫咪>"
+                        android:textColor="#ff6666"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+                <!--分隔线-->
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#FF909090" />
+                <!--手机号-->
+                <RelativeLayout
+                    android:id="@+id/itemPhonenum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="手机号"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/userPhonenum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="小猫咪>"
+                        android:textColor="#ff6666"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+                <!--分隔线-->
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#FF909090" />
+                <!--邮箱-->
+                <RelativeLayout
+                    android:id="@+id/itemEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="邮箱"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/userEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="小猫咪>"
+                        android:textColor="#ff6666"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+                <!--分隔线-->
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#FF909090" />
+                <!--乱七八糟-->
+                <RelativeLayout
+                    android:id="@+id/itemWhat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="乱七八糟"
+                        android:textSize="20dp" />
+
+                    <TextView
+                        android:id="@+id/userWhat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="小猫咪>"
+                        android:textColor="#ff6666"
+                        android:textSize="20dp" />
+                </RelativeLayout>
+                <!--分隔线-->
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#FF909090" />
 
             </LinearLayout>
 
-
-            <ImageButton android:id="@+id/userImage"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/userimagecircle"
-                android:src="@drawable/dog"
-                android:scaleType="fitXY"
-                android:padding="5dp"
-                android:layout_alignParentRight="true"/>
-        </RelativeLayout>
-
-        <!--分隔线-->
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="2dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="#FF909090"/>
-
-        <!--昵称等等等-->
-        <LinearLayout android:id="@+id/information"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <!--昵称-->
-            <RelativeLayout android:id="@+id/itemNickName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="昵称"
-                    android:textSize="20dp"/>
-                <TextView android:id="@+id/userNickName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="小猫咪>"
-                    android:textSize="20dp"
-                    android:textColor="#ff6666"/>
-            </RelativeLayout>
-            <!--分隔线-->
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#FF909090"/>
-            <!--性别-->
-            <RelativeLayout android:id="@+id/itemSex"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="性别"
-                    android:textSize="20dp"/>
-                <TextView android:id="@+id/userSex"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="小猫咪>"
-                    android:textSize="20dp"
-                    android:textColor="#ff6666"/>
-            </RelativeLayout>
-            <!--分隔线-->
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#FF909090"/>
-            <!--生日-->
-            <RelativeLayout android:id="@+id/itemBirthday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="生日"
-                    android:textSize="20dp"/>
-                <TextView android:id="@+id/userBirthday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="小猫咪>"
-                    android:textSize="20dp"
-                    android:textColor="#ff6666"/>
-            </RelativeLayout>
-            <!--分隔线-->
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#FF909090"/>
-            <!--手机号-->
-            <RelativeLayout android:id="@+id/itemPhonenum"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="手机号"
-                    android:textSize="20dp"/>
-                <TextView android:id="@+id/userPhonenum"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="小猫咪>"
-                    android:textSize="20dp"
-                    android:textColor="#ff6666"/>
-            </RelativeLayout>
-            <!--分隔线-->
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#FF909090"/>
-            <!--邮箱-->
-            <RelativeLayout android:id="@+id/itemEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="邮箱"
-                    android:textSize="20dp"/>
-                <TextView android:id="@+id/userEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="小猫咪>"
-                    android:textSize="20dp"
-                    android:textColor="#ff6666"/>
-            </RelativeLayout>
-            <!--分隔线-->
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#FF909090"/>
-            <!--乱七八糟-->
-            <RelativeLayout android:id="@+id/itemWhat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="乱七八糟"
-                    android:textSize="20dp"/>
-                <TextView android:id="@+id/userWhat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="小猫咪>"
-                    android:textSize="20dp"
-                    android:textColor="#ff6666"/>
-            </RelativeLayout>
-            <!--分隔线-->
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="#FF909090"/>
-
         </LinearLayout>
-
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
+</layout>
