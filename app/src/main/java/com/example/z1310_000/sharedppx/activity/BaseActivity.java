@@ -19,6 +19,11 @@ public class BaseActivity extends AppCompatActivity {
     TextView mToolbarTitle;
     ImageButton returnLast,close;
 
+    public void setTranslucentStatus(){
+        //透明状态栏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+    }
+
     public void initToolbar(String title){
 
         mToolbar=findViewById(R.id.mToolbar);
@@ -35,8 +40,7 @@ public class BaseActivity extends AppCompatActivity {
             mToolbarTitle.setText(title);
             //Toast.makeText(this, "are you ojbk?", Toast.LENGTH_SHORT).show();
             setToolbarListener();
-            //透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
         }
 
     }
@@ -50,6 +54,7 @@ public class BaseActivity extends AppCompatActivity {
                     finish();
                 }
             });
+            setTranslucentStatus();
         }
         if(close!=null){
             close.setOnClickListener(new View.OnClickListener() {

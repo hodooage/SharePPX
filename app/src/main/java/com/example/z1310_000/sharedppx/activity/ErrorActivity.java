@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.z1310_000.sharedppx.R;
 
-public class ErrorActivity extends AppCompatActivity {
+public class ErrorActivity extends BaseActivity {
     private TextView errorMessage;
     private Button toMain;
 

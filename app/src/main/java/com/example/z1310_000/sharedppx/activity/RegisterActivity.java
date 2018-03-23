@@ -7,12 +7,13 @@ import android.os.Bundle;
 
 import com.example.z1310_000.sharedppx.R;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        initToolbar("用户注册");
     }
 
     public static void startAction(Context context){

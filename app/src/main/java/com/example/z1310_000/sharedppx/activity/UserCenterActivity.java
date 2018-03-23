@@ -29,13 +29,14 @@ import com.example.z1310_000.sharedppx.entity.User;
 
 import org.litepal.crud.DataSupport;
 
-public class UserCenterActivity extends AppCompatActivity {
+public class UserCenterActivity extends BaseActivity {
     private ActivityUserCenterBinding mBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding= DataBindingUtil.setContentView(this,R.layout.activity_user_center);
+        setTranslucentStatus();
         initData();
         initListener();
     }

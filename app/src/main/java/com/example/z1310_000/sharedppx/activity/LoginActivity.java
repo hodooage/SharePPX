@@ -24,21 +24,49 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import java.io.IOException;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "LoginActivity";
     private ActivityLoginBinding mBinding;
+    private UserService userService=UserService.util.getUserService();
+    private User user=DataSupport.findFirst(User.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this,R.layout.activity_login);
+        setTranslucentStatus();
+        initData();
         initListener();
+    }
+
+    private void initData(){
+
+        if(user!=null){
+            Call<Result<User>> call= userService.getUserById(user.getUid());
+            call.enqueue(new Callback<Result<User>>() {
+                @Override
+                public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
+                    Result<User> result=response.body();
+                    user=result.getData();
+                    user.save();
+                    mBinding.loginState.setText("数据同步成功");
+                }
+
+                @Override
+                public void onFailure(Call<Result<User>> call, Throwable t) {
+
+                }
+            });
+            mBinding.href.setOnClickListener(this);
+        }else{
+            mBinding.loginState.setText("请先登录");
+        }
     }
 
     private void initListener(){
         mBinding.registerbtn.setOnClickListener(this);
         mBinding.loginbtn.setOnClickListener(this);
-        mBinding.href.setOnClickListener(this);
+
     }
 
     @Override
@@ -51,7 +79,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 loginServer();
                 break;
             case  R.id.href:
-                UserCenterActivity.startAction(this);
+                TestAmapActivity.startAction(this);
                 break;
         }
     }
@@ -59,7 +87,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void loginServer() {
         String username= String.valueOf(mBinding.username.getText());
         String password= String.valueOf(mBinding.password.getText());
-        UserService userService=UserService.util.getUserService();
 
         Call<Result<User>> call=userService.userLogin(username,password);
         call.enqueue(new Callback<Result<User>>() {
@@ -69,14 +96,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 DataSupport.deleteAll(User.class);
                 Result<User> result=response.body();
                 User user=result.getData();
-                System.out.println(user.getUid());
-                System.out.println(user.toString());
                 user.save();
+                mBinding.loginState.setText("登录成功");
             }
 
             @Override
             public void onFailure(Call<Result<User>> call, Throwable t) {
-                System.out.println("请求失败");
+                mBinding.loginState.setText("登录失败");
             }
         });
 

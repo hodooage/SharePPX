@@ -10,6 +10,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
@@ -25,6 +26,7 @@ import com.example.z1310_000.sharedppx.entity.User;
 import com.example.z1310_000.sharedppx.service.UserService;
 import com.example.z1310_000.sharedppx.util.ToastUtil;
 import com.example.z1310_000.sharedppx.utils.GlideImageLoader;
+import com.example.z1310_000.sharedppx.utils.Result;
 import com.example.z1310_000.sharedppx.utils.RetrofitUtil;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
@@ -47,9 +49,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserInformationActivity extends BaseActivity {
+    private static final String TAG = "UserInformationActivity";
     private ActivityUserInformationBinding mBinding;
 
     private User user;
+
+    private UserService userService=UserService.util.getUserService();;
 
     private ImagePicker imagePicker;
     //初始化性别选项为-1
@@ -73,6 +78,7 @@ public class UserInformationActivity extends BaseActivity {
     }
 
     private void initData() {
+
             user = DataSupport.findFirst(User.class);
             mBinding.userNickName.setText(user.getNickname());
             mBinding.userSex.setText(user.getSex());
@@ -137,6 +143,12 @@ public class UserInformationActivity extends BaseActivity {
             }
         });
 
+        mBinding.itemEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showChangeEmailDialog();
+            }
+        });
     }
 
 
@@ -192,7 +204,7 @@ public class UserInformationActivity extends BaseActivity {
                             .apply(options)
                             .into(mBinding.userImage);
                     File file=new File(images.get(0).path);
-
+                    System.out.println(file.getAbsolutePath());
                     uploadImage(file);
                 }
             }else {
@@ -201,22 +213,32 @@ public class UserInformationActivity extends BaseActivity {
         }
     }
 
-    // TODO: 2018/3/21 0021 上传图片还有问题，服务器收不到请求 
     private void uploadImage(File file){
-        RequestBody requestFile=RequestBody.create(MediaType.parse("multipart/form-data"),file);
-        MultipartBody.Part body= MultipartBody.Part.createFormData("file","asd",requestFile);
+        // 创建 RequestBody，用于封装构建RequestBody
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-        UserService userService=UserService.util.getUserService();
-        Call<ResponseBody> call=userService.uploadImage(user.getUid(), body);
+        // MultipartBody.Part  和后端约定好Key，这里的partName是用image
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+
+
+        Call<ResponseBody> call=userService.uploadImage(user.getUid(),body);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                
+                try {
+                    String newImageUrl=response.body().string();
+                    user.setImage(newImageUrl);
+                    user.save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Log.e(TAG, "onFailure: "+t );
             }
         });
     }
@@ -233,7 +255,24 @@ public class UserInformationActivity extends BaseActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        final String newNickName=editText.getText().toString();
+                        user.setNickname(newNickName);
+                        System.out.println(user.toString());
+                        Call<Result<Integer>> call=userService.editUserInformation(user);
+                        call.enqueue(new Callback<Result<Integer>>() {
+                            @Override
+                            public void onResponse(Call<Result<Integer>> call, Response<Result<Integer>> response) {
+                                Toast.makeText(UserInformationActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                                user.save();
+                                mBinding.userNickName.setText(newNickName);
+                            }
 
+                            @Override
+                            public void onFailure(Call<Result<Integer>> call, Throwable t) {
+                                Toast.makeText(UserInformationActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
                     }
                 }).show();
     }
@@ -249,18 +288,36 @@ public class UserInformationActivity extends BaseActivity {
         AlertDialog.Builder singleChoiceDialog =
                 new AlertDialog.Builder(UserInformationActivity.this);
         singleChoiceDialog.setTitle("修改性别");
+        int nowSex=user.getSex().equals("男")?0:1;
         // 第二个参数是默认选项，此处设置为0
-        singleChoiceDialog.setSingleChoiceItems(items, -1,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        yourChoice = which;
-                    }
-                });
+        singleChoiceDialog.setSingleChoiceItems(items, nowSex, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                yourChoice=i;
+            }
+        });
         singleChoiceDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        System.out.println(yourChoice);
+                        final String newSex=yourChoice==0?"男":"女";
+                        user.setSex(newSex);
+                        Call<Result<Integer>> call=userService.editUserInformation(user);
+                        call.enqueue(new Callback<Result<Integer>>() {
+                            @Override
+                            public void onResponse(Call<Result<Integer>> call, Response<Result<Integer>> response) {
+                                Toast.makeText(UserInformationActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                                user.save();
+                                mBinding.userSex.setText(newSex);
+                            }
+
+                            @Override
+                            public void onFailure(Call<Result<Integer>> call, Throwable t) {
+                                Toast.makeText(UserInformationActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
                     }
                 });
         singleChoiceDialog.show();
@@ -278,10 +335,60 @@ public class UserInformationActivity extends BaseActivity {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
+                final String chooseData=year+"年"+(monthOfYear+1)+"月"+dayOfMonth+"日";
+                user.setBirthday(chooseData);
+                Call<Result<Integer>> call=userService.editUserInformation(user);
+                call.enqueue(new Callback<Result<Integer>>() {
+                    @Override
+                    public void onResponse(Call<Result<Integer>> call, Response<Result<Integer>> response) {
+                        Toast.makeText(UserInformationActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                        user.save();
+                        mBinding.userBirthday.setText(chooseData);
+                    }
 
+                    @Override
+                    public void onFailure(Call<Result<Integer>> call, Throwable t) {
+                        Toast.makeText(UserInformationActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
 
+                    }
+                });
             }
         },year,month,day).show();
 
+    }
+
+    //更改邮箱对话框
+    private void showChangeEmailDialog() {
+    /*@setView 装入一个EditView
+     */
+        final EditText editText = new EditText(UserInformationActivity.this);
+        editText.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        AlertDialog.Builder inputDialog =
+                new AlertDialog.Builder(UserInformationActivity.this);
+        inputDialog.setTitle("修改邮箱").setView(editText);
+        inputDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        final String newEmailAddress=editText.getText().toString();
+                        user.setEmail(newEmailAddress);
+                        System.out.println(user.toString());
+                        Call<Result<Integer>> call=userService.editUserInformation(user);
+                        call.enqueue(new Callback<Result<Integer>>() {
+                            @Override
+                            public void onResponse(Call<Result<Integer>> call, Response<Result<Integer>> response) {
+                                Toast.makeText(UserInformationActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                                user.save();
+                                mBinding.userEmail.setText(newEmailAddress);
+                            }
+
+                            @Override
+                            public void onFailure(Call<Result<Integer>> call, Throwable t) {
+                                Toast.makeText(UserInformationActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+                    }
+                }).show();
     }
 }

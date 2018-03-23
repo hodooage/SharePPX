@@ -42,7 +42,7 @@ import java.util.TimerTask;
 
 import cz.msebera.android.httpclient.Header;
 
-public class CountTimeActivity extends AppCompatActivity {
+public class CountTimeActivity extends BaseActivity {
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
     //声明定位回调监听器

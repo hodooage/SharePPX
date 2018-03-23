@@ -7,7 +7,7 @@ import android.widget.ImageButton;
 
 import com.example.z1310_000.sharedppx.R;
 
-public class AlertActivity extends AppCompatActivity implements View.OnClickListener {
+public class AlertActivity extends BaseActivity implements View.OnClickListener {
     private ImageButton exit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

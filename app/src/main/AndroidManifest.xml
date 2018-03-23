@@ -70,7 +70,8 @@
 
         <activity android:name=".activity.MyWalletActivity" />
         <activity android:name=".activity.MyServiceActivity" />
-        <activity android:name=".activity.TestActivity"></activity>
+        <activity android:name=".activity.TestActivity" />
+        <activity android:name=".activity.TestAmapActivity"></activity>
     </application>
 
 </manifest>

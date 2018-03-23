@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.Header;
 
-public class GetXiaActivity extends AppCompatActivity {
+public class GetXiaActivity extends BaseActivity {
     private AsyncHttpClient client = new AsyncHttpClient();
     private StartDriveXiaRequest startDriveXiaRequest = new StartDriveXiaRequest();
     private Bundle bundle;

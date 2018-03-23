@@ -5,7 +5,7 @@ android {
         zwj {
             keyAlias 'mykey'
             keyPassword 'zwj210zwj'
-            storeFile file('D:/Personal/Desktop/design/SharePPX/mykeystore.jks')
+            storeFile file('C:/Users/z1310_000/Desktop/mmm/SharePPX-APP/mykeystore.jks')
             storePassword 'zwj210zwj'
         }
     }
@@ -68,6 +68,6 @@ dependencies {
     //图片选择库
     compile 'com.lzy.widget:imagepicker:0.6.1'
     //图片加载库
-    compile"com.github.bumptech.glide:glide:4.3.1"
+    compile "com.github.bumptech.glide:glide:4.3.1"
 
 }

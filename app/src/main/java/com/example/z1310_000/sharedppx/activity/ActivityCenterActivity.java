@@ -7,7 +7,7 @@ import android.os.Bundle;
 
 import com.example.z1310_000.sharedppx.R;
 
-public class ActivityCenterActivity extends AppCompatActivity {
+public class ActivityCenterActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
