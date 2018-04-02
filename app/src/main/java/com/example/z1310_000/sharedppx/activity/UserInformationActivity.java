@@ -6,9 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.media.Image;
-import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -24,10 +21,8 @@ import com.example.z1310_000.sharedppx.R;
 import com.example.z1310_000.sharedppx.databinding.ActivityUserInformationBinding;
 import com.example.z1310_000.sharedppx.entity.User;
 import com.example.z1310_000.sharedppx.service.UserService;
-import com.example.z1310_000.sharedppx.util.ToastUtil;
 import com.example.z1310_000.sharedppx.utils.GlideImageLoader;
-import com.example.z1310_000.sharedppx.utils.Result;
-import com.example.z1310_000.sharedppx.utils.RetrofitUtil;
+import com.example.z1310_000.sharedppx.entity.ResponseResult;
 import com.lzy.imagepicker.ImagePicker;
 import com.lzy.imagepicker.bean.ImageItem;
 import com.lzy.imagepicker.ui.ImageGridActivity;
@@ -258,17 +253,17 @@ public class UserInformationActivity extends BaseActivity {
                         final String newNickName=editText.getText().toString();
                         user.setNickname(newNickName);
                         System.out.println(user.toString());
-                        Call<Result<Integer>> call=userService.editUserInformation(user);
-                        call.enqueue(new Callback<Result<Integer>>() {
+                        Call<ResponseResult<Integer>> call=userService.editUserInformation(user);
+                        call.enqueue(new Callback<ResponseResult<Integer>>() {
                             @Override
-                            public void onResponse(Call<Result<Integer>> call, Response<Result<Integer>> response) {
+                            public void onResponse(Call<ResponseResult<Integer>> call, Response<ResponseResult<Integer>> response) {
                                 Toast.makeText(UserInformationActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
                                 user.save();
                                 mBinding.userNickName.setText(newNickName);
                             }
 
                             @Override
-                            public void onFailure(Call<Result<Integer>> call, Throwable t) {
+                            public void onFailure(Call<ResponseResult<Integer>> call, Throwable t) {
                                 Toast.makeText(UserInformationActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
 
                             }
@@ -303,17 +298,17 @@ public class UserInformationActivity extends BaseActivity {
                         System.out.println(yourChoice);
                         final String newSex=yourChoice==0?"男":"女";
                         user.setSex(newSex);
-                        Call<Result<Integer>> call=userService.editUserInformation(user);
-                        call.enqueue(new Callback<Result<Integer>>() {
+                        Call<ResponseResult<Integer>> call=userService.editUserInformation(user);
+                        call.enqueue(new Callback<ResponseResult<Integer>>() {
                             @Override
-                            public void onResponse(Call<Result<Integer>> call, Response<Result<Integer>> response) {
+                            public void onResponse(Call<ResponseResult<Integer>> call, Response<ResponseResult<Integer>> response) {
                                 Toast.makeText(UserInformationActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
                                 user.save();
                                 mBinding.userSex.setText(newSex);
                             }
 
                             @Override
-                            public void onFailure(Call<Result<Integer>> call, Throwable t) {
+                            public void onFailure(Call<ResponseResult<Integer>> call, Throwable t) {
                                 Toast.makeText(UserInformationActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
 
                             }
@@ -337,17 +332,17 @@ public class UserInformationActivity extends BaseActivity {
                                   int dayOfMonth) {
                 final String chooseData=year+"年"+(monthOfYear+1)+"月"+dayOfMonth+"日";
                 user.setBirthday(chooseData);
-                Call<Result<Integer>> call=userService.editUserInformation(user);
-                call.enqueue(new Callback<Result<Integer>>() {
+                Call<ResponseResult<Integer>> call=userService.editUserInformation(user);
+                call.enqueue(new Callback<ResponseResult<Integer>>() {
                     @Override
-                    public void onResponse(Call<Result<Integer>> call, Response<Result<Integer>> response) {
+                    public void onResponse(Call<ResponseResult<Integer>> call, Response<ResponseResult<Integer>> response) {
                         Toast.makeText(UserInformationActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
                         user.save();
                         mBinding.userBirthday.setText(chooseData);
                     }
 
                     @Override
-                    public void onFailure(Call<Result<Integer>> call, Throwable t) {
+                    public void onFailure(Call<ResponseResult<Integer>> call, Throwable t) {
                         Toast.makeText(UserInformationActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
 
                     }
@@ -373,17 +368,17 @@ public class UserInformationActivity extends BaseActivity {
                         final String newEmailAddress=editText.getText().toString();
                         user.setEmail(newEmailAddress);
                         System.out.println(user.toString());
-                        Call<Result<Integer>> call=userService.editUserInformation(user);
-                        call.enqueue(new Callback<Result<Integer>>() {
+                        Call<ResponseResult<Integer>> call=userService.editUserInformation(user);
+                        call.enqueue(new Callback<ResponseResult<Integer>>() {
                             @Override
-                            public void onResponse(Call<Result<Integer>> call, Response<Result<Integer>> response) {
+                            public void onResponse(Call<ResponseResult<Integer>> call, Response<ResponseResult<Integer>> response) {
                                 Toast.makeText(UserInformationActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
                                 user.save();
                                 mBinding.userEmail.setText(newEmailAddress);
                             }
 
                             @Override
-                            public void onFailure(Call<Result<Integer>> call, Throwable t) {
+                            public void onFailure(Call<ResponseResult<Integer>> call, Throwable t) {
                                 Toast.makeText(UserInformationActivity.this, "修改失败", Toast.LENGTH_SHORT).show();
 
                             }

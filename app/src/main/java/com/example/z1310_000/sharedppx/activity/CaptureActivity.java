@@ -17,11 +17,9 @@ package com.example.z1310_000.sharedppx.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -30,32 +28,30 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.example.z1310_000.sharedppx.camera.CameraManager;
 import com.example.z1310_000.sharedppx.decode.DecodeThread;
-import com.example.z1310_000.sharedppx.request.GetXiaRequest;
+import com.example.z1310_000.sharedppx.entity.Xia;
+import com.example.z1310_000.sharedppx.service.XiaService;
 import com.example.z1310_000.sharedppx.utils.BeepManager;
 import com.example.z1310_000.sharedppx.utils.CaptureActivityHandler;
 import com.example.z1310_000.sharedppx.utils.InactivityTimer;
-import com.example.z1310_000.sharedppx.utils.Message;
+import com.example.z1310_000.sharedppx.entity.ResponseResult;
 import com.google.zxing.Result;
 import com.example.z1310_000.sharedppx.R;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cz.msebera.android.httpclient.Header;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * This activity opens the camera and does the actual scanning on a background
@@ -66,10 +62,7 @@ import cz.msebera.android.httpclient.Header;
  * @author dswitkin@google.com (Daniel Switkin)
  * @author Sean Owen
  */
-public final class CaptureActivity extends AppCompatActivity implements SurfaceHolder.Callback {
-    private AsyncHttpClient client = new AsyncHttpClient();
-    private GetXiaRequest getXiaRequest = new GetXiaRequest();
-
+public final class CaptureActivity extends BaseActivity implements SurfaceHolder.Callback {
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
     private CameraManager cameraManager;
@@ -81,9 +74,13 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
     private RelativeLayout scanContainer;
     private RelativeLayout scanCropView;
     private ImageView scanLine;
+    private Button testButton;
 
     private Rect mCropRect = null;
     private boolean isHasSurface = false;
+
+    //请求
+    private XiaService xiaService=XiaService.util.getXiaService();
 
     public Handler getHandler() {
         return handler;
@@ -101,6 +98,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_capture);
 
+        initToolbar("扫码取虾");
         scanPreview = (SurfaceView) findViewById(R.id.capture_preview);
         scanContainer = (RelativeLayout) findViewById(R.id.capture_container);
         scanCropView = (RelativeLayout) findViewById(R.id.capture_crop_view);
@@ -109,6 +107,14 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         inactivityTimer = new InactivityTimer(this);
         beepManager = new BeepManager(this);
 
+        testButton=findViewById(R.id.testButton);
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CallCall();
+            }
+        });
+
         TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_PARENT, 0.0f, Animation
                 .RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT, 0.0f, Animation.RELATIVE_TO_PARENT,
                 0.9f);
@@ -116,6 +122,25 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         animation.setRepeatCount(-1);
         animation.setRepeatMode(Animation.RESTART);
         scanLine.startAnimation(animation);
+    }
+
+    private void CallCall(){
+        Call<ResponseResult<Xia>> call=xiaService.getXiaById(5121001);
+        call.enqueue(new Callback<ResponseResult<Xia>>() {
+            @Override
+            public void onResponse(Call<ResponseResult<Xia>> call, Response<ResponseResult<Xia>> response) {
+
+                ResponseResult<Xia> result= response.body();
+                Xia xia=result.getData();
+                System.out.println(xia.getLongitude());
+                GetXiaActivity.startAction(getApplicationContext(),xia);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseResult<Xia>> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
@@ -210,54 +235,26 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         boolean rs = matcher.matches();
 
         if (rs) {
-            int xID = Integer.parseInt(rawResult.getText());
-            //扫码得到的虾编号
-            client.post(this, getXiaRequest.getUrl(), getXiaRequest.getStringEntity(xID), "application/json", new JsonHttpResponseHandler() {
+            System.out.println(Integer.parseInt(rawResult.toString()));
+            Call<ResponseResult<Xia>> call=xiaService.getXiaById(Integer.parseInt(rawResult.toString()));
+            call.enqueue(new Callback<ResponseResult<Xia>>() {
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    super.onSuccess(statusCode, headers, response);
-                    try {
-                        //result为ok说明数据库存在这只虾
-                        if(response.getString("result").equals("ok")){
-                            //state为0说明这只虾能用,跳转到获取虾的详情页
-                            if(response.getInt("state")==0){
-                                Intent toGetXia=new Intent(CaptureActivity.this,GetXiaActivity.class);
-                                bundle.putInt("xid",response.getInt("id"));
-                                bundle.putInt("type",response.getInt("type"));
-                                bundle.putString("price",response.getString("price"));
-                                toGetXia.putExtras(bundle);
-                                startActivity(toGetXia);
-                            }else {
-                                ErrorActivity.actionStart(CaptureActivity.this,"这只虾目前受伤了，您换一只骑嘛~");
-                            }
-                        }else{
-                            ErrorActivity.actionStart(CaptureActivity.this,"我们没有这种品种的虾哦~");
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                public void onResponse(Call<ResponseResult<Xia>> call, Response<ResponseResult<Xia>> response) {
+
+                    ResponseResult<Xia> result= response.body();
+                    Xia xia=result.getData();
+                    System.out.println(xia.getLongitude());
+                    GetXiaActivity.startAction(getApplicationContext(),xia);
                 }
 
                 @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                    ErrorActivity.actionStart(CaptureActivity.this,"RO~与服务器连接异常，检查一下网络吧~~");
+                public void onFailure(Call<ResponseResult<Xia>> call, Throwable t) {
 
                 }
             });
-        } else {
-            ErrorActivity.actionStart(CaptureActivity.this,"这不是俺们的二维码哦~~");
+        }else {
+            ErrorActivity.startAction(CaptureActivity.this,"这不是俺们的二维码哦~~");
         }
-
-
-        /*Intent resultIntent = new Intent(this,GetXiaActivity.class);
-        bundle.putInt("width", mCropRect.width());
-        bundle.putInt("height", mCropRect.height());
-        bundle.putString("result", rawResult.getText());
-        resultIntent.putExtras(bundle);
-        this.setResult(RESULT_OK, resultIntent);
-        //CaptureActivity.this.finish();
-        startActivity(resultIntent);*/
     }
 
     private void initCamera(SurfaceHolder surfaceHolder) {

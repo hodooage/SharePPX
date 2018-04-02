@@ -9,17 +9,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.z1310_000.sharedppx.R;
 import com.example.z1310_000.sharedppx.entity.User;
 import com.example.z1310_000.sharedppx.service.UserService;
 import com.example.z1310_000.sharedppx.utils.AppConfig;
-import com.example.z1310_000.sharedppx.utils.Result;
+import com.example.z1310_000.sharedppx.entity.ResponseResult;
 
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,15 +54,15 @@ public class TestActivity extends AppCompatActivity {
                 .baseUrl(AppConfig.URL_BASE)
                 .build();
         UserService userService=retrofit.create(UserService.class);
-        Call<Result<User>> call = userService.userLogin("qqq","123");
-        call.enqueue(new Callback<Result<User>>() {
+        Call<ResponseResult<User>> call = userService.userLogin("qqq","123");
+        call.enqueue(new Callback<ResponseResult<User>>() {
             @Override
-            public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
+            public void onResponse(Call<ResponseResult<User>> call, Response<ResponseResult<User>> response) {
                 textView.setText(response.body().toString());
             }
 
             @Override
-            public void onFailure(Call<Result<User>> call, Throwable t) {
+            public void onFailure(Call<ResponseResult<User>> call, Throwable t) {
 
             }
         });

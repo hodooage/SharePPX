@@ -19,7 +19,7 @@ public class ErrorActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_error);
-
+        initToolbar("出错啦~");
         initView();
         initData();
         initListener();
@@ -27,7 +27,7 @@ public class ErrorActivity extends BaseActivity {
     }
 
     //其他任意页面都可以调用此方法，接收错误信息参数
-    public static void actionStart(Context context,String ErrorMessage){
+    public static void startAction(Context context,String ErrorMessage){
         Intent intent=new Intent(context,ErrorActivity.class);
         intent.putExtra("errorMessage",ErrorMessage);
         context.startActivity(intent);

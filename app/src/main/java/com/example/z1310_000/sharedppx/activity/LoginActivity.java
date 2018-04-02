@@ -3,26 +3,20 @@ package com.example.z1310_000.sharedppx.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.databinding.Observable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 
 import com.example.z1310_000.sharedppx.R;
 import com.example.z1310_000.sharedppx.databinding.ActivityLoginBinding;
 import com.example.z1310_000.sharedppx.entity.User;
 import com.example.z1310_000.sharedppx.service.UserService;
-import com.example.z1310_000.sharedppx.utils.Result;
+import com.example.z1310_000.sharedppx.entity.ResponseResult;
 
 import org.litepal.crud.DataSupport;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import java.io.IOException;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "LoginActivity";
@@ -42,18 +36,18 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void initData(){
 
         if(user!=null){
-            Call<Result<User>> call= userService.getUserById(user.getUid());
-            call.enqueue(new Callback<Result<User>>() {
+            Call<ResponseResult<User>> call= userService.getUserById(user.getUid());
+            call.enqueue(new Callback<ResponseResult<User>>() {
                 @Override
-                public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
-                    Result<User> result=response.body();
-                    user=result.getData();
+                public void onResponse(Call<ResponseResult<User>> call, Response<ResponseResult<User>> response) {
+                    ResponseResult<User> responseResult =response.body();
+                    user= responseResult.getData();
                     user.save();
                     mBinding.loginState.setText("数据同步成功");
                 }
 
                 @Override
-                public void onFailure(Call<Result<User>> call, Throwable t) {
+                public void onFailure(Call<ResponseResult<User>> call, Throwable t) {
 
                 }
             });
@@ -79,7 +73,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 loginServer();
                 break;
             case  R.id.href:
-                TestAmapActivity.startAction(this);
+                MainActivity.startAction(this);
                 break;
         }
     }
@@ -88,20 +82,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         String username= String.valueOf(mBinding.username.getText());
         String password= String.valueOf(mBinding.password.getText());
 
-        Call<Result<User>> call=userService.userLogin(username,password);
-        call.enqueue(new Callback<Result<User>>() {
+        Call<ResponseResult<User>> call=userService.userLogin(username,password);
+        call.enqueue(new Callback<ResponseResult<User>>() {
             @Override
-            public void onResponse(Call<Result<User>> call, Response<Result<User>> response) {
+            public void onResponse(Call<ResponseResult<User>> call, Response<ResponseResult<User>> response) {
                 //清除之前的用户信息
                 DataSupport.deleteAll(User.class);
-                Result<User> result=response.body();
-                User user=result.getData();
+                ResponseResult<User> responseResult =response.body();
+                User user= responseResult.getData();
                 user.save();
                 mBinding.loginState.setText("登录成功");
+                initData();
             }
 
             @Override
-            public void onFailure(Call<Result<User>> call, Throwable t) {
+            public void onFailure(Call<ResponseResult<User>> call, Throwable t) {
                 mBinding.loginState.setText("登录失败");
             }
         });

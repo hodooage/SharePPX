@@ -1,118 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.z1310_000.sharedppx.activity.CountTimeActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
 
-    <LinearLayout
+    </data>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:context="com.example.z1310_000.sharedppx.activity.CountTimeActivity">
 
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/x33"
-            android:id="@+id/relativeLayout">
-            <include layout="@layout/toolbarlayout"></include>
-
-
-        </RelativeLayout>
-        <!--页头-->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="18dp"
-            android:text="当前虾牌号：" />
-
-        <TextView
-            android:id="@+id/xiaId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="我是虾牌号"
-            android:textSize="50dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="18dp"
-            android:text="费率：" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center">
+            android:layout_height="match_parent"
 
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x33"
+                android:id="@+id/relativeLayout">
+
+                <include layout="@layout/toolbarlayout"></include>
+
+
+            </RelativeLayout>
+            <!--页头-->
             <TextView
-                android:id="@+id/xiaPrice"
-                android:layout_width="100dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="$100/分钟"
+                android:textSize="18dp"
+                android:text="当前虾牌号：" />
+
+            <TextView
+                android:id="@+id/xiaId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="我是虾牌号"
                 android:textSize="50dp" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="元/分钟"
-                android:textSize="30dp" />
+                android:textSize="18dp"
+                android:text="费率：" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/xiaPrice"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="$100/分钟"
+                    android:textSize="50dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="元/分钟"
+                    android:textSize="30dp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="计时:" />
+
+            <Chronometer
+                android:id="@+id/countTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#60c5ba"
+                android:textSize="50dp">
+
+            </Chronometer>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="18dp"
+                android:text="当前计费：" />
+
+            <TextView
+                android:id="@+id/sum"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="$100"
+                android:textColor="#ff6666"
+                android:textSize="50dp" />
+
+            <Button
+                android:id="@+id/stopDriveXia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:text="结束骑行" />
+
+            <Button
+                android:id="@+id/toMain"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:text="返回主页" />
         </LinearLayout>
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="18dp"
-            android:text="计时:" />
-
-        <Chronometer
-            android:id="@+id/countTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textColor="#60c5ba"
-            android:textSize="50dp">
-
-        </Chronometer>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="18dp"
-            android:text="当前计费：" />
-
-        <TextView
-            android:id="@+id/sum"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="$100"
-            android:textColor="#ff6666"
-            android:textSize="50dp" />
-
-        <Button
-            android:id="@+id/stopDriveXia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="18dp"
-            android:text="结束骑行" />
-
-        <Button
-            android:id="@+id/toMain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="18dp"
-            android:text="返回主页" />
-    </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</layout>

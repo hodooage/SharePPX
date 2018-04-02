@@ -2,18 +2,13 @@ package com.example.z1310_000.sharedppx.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
-import android.os.Handler;
-import android.os.Message;
 import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -21,11 +16,16 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.example.z1310_000.sharedppx.R;
+import com.example.z1310_000.sharedppx.databinding.ActivityCountTimeBinding;
+import com.example.z1310_000.sharedppx.entity.UseRecord;
 import com.example.z1310_000.sharedppx.entity.User;
-import com.example.z1310_000.sharedppx.request.ChangeBalanceRequest;
 import com.example.z1310_000.sharedppx.request.ChangeXiaStateRequest;
-import com.example.z1310_000.sharedppx.request.RetrieveUserBalanceRequest;
 import com.example.z1310_000.sharedppx.request.StopDriveXiaRequest;
+import com.example.z1310_000.sharedppx.service.UseRecordService;
+import com.example.z1310_000.sharedppx.service.UserService;
+import com.example.z1310_000.sharedppx.entity.ResponseResult;
+import com.example.z1310_000.sharedppx.service.XiaService;
+import com.example.z1310_000.sharedppx.utils.Tips;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -35,14 +35,16 @@ import org.litepal.crud.DataSupport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import cz.msebera.android.httpclient.Header;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CountTimeActivity extends BaseActivity {
+    private ActivityCountTimeBinding mBinding;
+
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
     //声明定位回调监听器
@@ -50,32 +52,25 @@ public class CountTimeActivity extends BaseActivity {
     //声明AMapLocationClientOption对象
     public AMapLocationClientOption mLocationOption = null;
 
+    private UseRecord useRecord;
 
-    private Bundle mbundle;
-
-    private Chronometer countTime;
-
-    private TextView xiaId, xiaPrice, sum;
-
-    private Button stopDriveXia,toMain;
-
-    private ImageButton returnMain;
-
-    private int  xid;
     private float price;
 
     private double latitude,longitude;
 
     private User nowUser= DataSupport.findFirst(User.class);
 
+    private UserService userService=UserService.util.getUserService();
 
+    private XiaService xiaService=XiaService.util.getXiaService();
 
-    //是否扣款成功
-    boolean reduceBalance=false;
+    private UseRecordService useRecordService=UseRecordService.util.getUseRecordService();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_count_time);
+        mBinding= DataBindingUtil.setContentView(this,R.layout.activity_count_time);
+        initToolbar("计时页面");
 
         initView();
         initData();
@@ -93,43 +88,34 @@ public class CountTimeActivity extends BaseActivity {
     }
 
     private void initView() {
-        xiaId = (TextView) findViewById(R.id.xiaId);
-        xiaPrice = (TextView) findViewById(R.id.xiaPrice);
-        sum = (TextView) findViewById(R.id.sum);
-        countTime = (Chronometer) findViewById(R.id.countTime);
-        stopDriveXia = (Button) findViewById(R.id.stopDriveXia);
-        toMain= (Button) findViewById(R.id.toMain);
-        returnMain= (ImageButton) findViewById(R.id.close);
         //电子字体
         Typeface typeface=Typeface.createFromAsset(getAssets(),"fonts/elecnum.TTF");
-        xiaId.setTypeface(typeface);
-        xiaPrice.setTypeface(typeface);
-        sum.setTypeface(typeface);
-        countTime.setTypeface(typeface);
+        mBinding.xiaId.setTypeface(typeface);
+        mBinding.xiaPrice.setTypeface(typeface);
+        mBinding.sum.setTypeface(typeface);
+        mBinding.countTime.setTypeface(typeface);
     }
 
     private void initData() {
-        mbundle = getIntent().getExtras();
+        useRecord= (UseRecord) getIntent().getSerializableExtra("useRecord");
 
         /*根据前一页面传过来的数据填充*/
-        xid = mbundle.getInt("xid");
         price = Float.parseFloat(mbundle.getString("price"));
 
-        xiaId.setText(String.valueOf(xid));
-        xiaPrice.setText(String.valueOf(price));
+        mBinding.xiaId.setText(String.valueOf(useRecord.getxId()));
+        mBinding.xiaPrice.setText(String.valueOf(price));
     }
 
     private void initListener() {
-        stopDriveXia.setOnClickListener(new View.OnClickListener() {
+        mBinding.stopDriveXia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                int uid = nowUser.getUid();
-                ChangeBalanceRequest changeBalanceRequest = new ChangeBalanceRequest();
-
                 //修改当前用户余额
                 //扣款成功才修改订单记录表和虾的状态
-                double nowsum = Double.parseDouble(String.valueOf(sum.getText()));
+                reduceBalance();
+
+
+
                 AsyncHttpClient changeBalanceClient = new AsyncHttpClient();
                 changeBalanceClient.post(CountTimeActivity.this, changeBalanceRequest.getUrl(), changeBalanceRequest.getStringEntity(uid, nowsum), "application/json", new JsonHttpResponseHandler() {
                     @Override
@@ -138,7 +124,7 @@ public class CountTimeActivity extends BaseActivity {
                         try {
                             if(response.getString("result").equals("ok")){
                                 Toast.makeText(getApplicationContext(), "扣款成功", Toast.LENGTH_SHORT).show();
-                                countTime.stop();
+
 
                                 reduceBalance=true;
 
@@ -207,30 +193,66 @@ public class CountTimeActivity extends BaseActivity {
         });
 
 
-        countTime.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+        mBinding.countTime.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
-                int hour = (int) ((SystemClock.elapsedRealtime() - countTime.getBase()) / 1000 / 60);
-                sum.setText(String.valueOf((hour) * price));
-            }
-        });
-
-        toMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainActivity.startAction(CountTimeActivity.this);
-            }
-        });
-
-        returnMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MainActivity.startAction(CountTimeActivity.this);
+                int hour = (int) ((SystemClock.elapsedRealtime() - mBinding.countTime.getBase()) / 1000 / 60);
+                mBinding.sum.setText(String.valueOf((hour) * price));
             }
         });
 
     }
 
+    private void reduceBalance(){
+        double totalMoney=Double.parseDouble(String.valueOf(mBinding.sum.getText()));
+
+        Call<ResponseResult<Integer>> call= userService.reduceBalance(useRecord.getuId(),totalMoney);
+        call.enqueue(new Callback<ResponseResult<Integer>>() {
+            @Override
+            public void onResponse(Call<ResponseResult<Integer>> call, Response<ResponseResult<Integer>> response) {
+                ResponseResult<Integer> result=response.body();
+                //扣款成功
+                if (result.getRet()){
+                    //停止计时
+                    mBinding.countTime.stop();
+                    //更改虾的状态
+                    changeXiaState();
+                    //更新使用记录
+                    updateUseRecord();
+                }//扣款失败
+                else{
+                    Toast.makeText(CountTimeActivity.this, result.getData(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseResult<Integer>> call, Throwable t) {
+                Toast.makeText(CountTimeActivity.this, Tips.INTERNET_ERROR_MESSAGE, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //更改虾的状态
+    private void changeXiaState(){
+        Call<ResponseResult<String>> call=xiaService.stopXiaById(useRecord.getxId());
+        call.enqueue(new Callback<ResponseResult<String>>() {
+            @Override
+            public void onResponse(Call<ResponseResult<String>> call, Response<ResponseResult<String>> response) {
+                ResponseResult<String> result=response.body();
+                System.out.println(result+"修改虾状态成功");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseResult<String>> call, Throwable t) {
+                Toast.makeText(CountTimeActivity.this, Tips.INTERNET_ERROR_MESSAGE, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //更新使用记录
+    private void updateUseRecord(){
+        useRecordService.
+    }
 
     /**
      * 重置
@@ -239,7 +261,7 @@ public class CountTimeActivity extends BaseActivity {
         //setBase 设置基准时间
         //设置参数base为SystemClock.elapsedRealtime()即表示从当前时间开始重新计时）。
 
-        countTime.setBase(SystemClock.elapsedRealtime());
+        mBinding.countTime.setBase(SystemClock.elapsedRealtime());
     }
 
     private void setBaseTime(){
@@ -248,12 +270,12 @@ public class CountTimeActivity extends BaseActivity {
         * */
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            Date ST=sdf.parse(mbundle.getString("startTime"));
+            Date ST=sdf.parse(useRecord.getStarttime());
             Date NT=sdf.parse(mbundle.getString("nowTime"));
             long baseTime=NT.getTime()-ST.getTime();
             //设置计时的基准时间为 计算出的经过多久时间开始
-            countTime.setBase(SystemClock.elapsedRealtime()-baseTime);
-            countTime.start();
+            mBinding.countTime.setBase(SystemClock.elapsedRealtime()-baseTime);
+            mBinding.countTime.start();
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -316,9 +338,9 @@ public class CountTimeActivity extends BaseActivity {
     }
 
     //进入这个页面需要传递一个bundle,包含useRecordId,startTime,xid,price,nowTime
-    public static void startAction(Context context,Bundle bundle){
+    public static void startAction(Context context,UseRecord useRecord){
         Intent intent=new Intent(context,CountTimeActivity.class);
-        intent.putExtras(bundle);
+        intent.putExtra("useRecord",useRecord);
         context.startActivity(intent);
 
     }

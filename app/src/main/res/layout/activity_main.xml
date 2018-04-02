@@ -22,13 +22,14 @@
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x33"
-                android:layout_weight="1"
                 android:background="#ff6666"
-                android:fitsSystemWindows="true">
+                android:fitsSystemWindows="true"
+                android:clipToPadding="true">
 
                 <ImageView
                     android:layout_width="@dimen/x33"
                     android:layout_height="@dimen/x33"
+                    android:layout_marginTop="@dimen/x4"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:layout_toEndOf="@+id/tips"

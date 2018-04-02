@@ -1,6 +1,6 @@
-package com.example.z1310_000.sharedppx.utils;
+package com.example.z1310_000.sharedppx.entity;
 
-public class Result<T> {
+public class ResponseResult<T> {
     //是否成功
     private Boolean ret = false;
     //返回信息
@@ -54,7 +54,7 @@ public class Result<T> {
 
     @Override
     public String toString() {
-        return "Result{" +
+        return "ResponseResult{" +
                 "ret=" + ret +
                 ", msg='" + msg + '\'' +
                 ", code=" + code +
