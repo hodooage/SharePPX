@@ -41,9 +41,11 @@ public interface UserService {
     @POST("editUserInformation")
     Call<ResponseResult<Integer>> editUserInformation(@Body User user);
 
-    @GET("reduceBalance")
+    @GET("reduceUserBalance")
     Call<ResponseResult<Integer>> reduceBalance(@Query("userId")int userId,@Query("totalMoney")double totalMoney);
 
+    @GET("addUserBalance")
+    Call<ResponseResult<Integer>> addBalance(@Query("userId")int userId,@Query("totalMoney")double totalMoney);
 
 
     class util{

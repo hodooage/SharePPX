@@ -13,7 +13,10 @@ public interface UseRecordService {
     Call<ResponseResult<UseRecord>> insertNewUseRecord(@Query("userId")int userId, @Query("xiaId")int xiaId);
 
     @GET("updateUseRecord")
-    Call<ResponseResult<UseRecord>> updateUseRecord(@Query("useRecordId")int useRecordId);
+    Call<ResponseResult<String>> updateUseRecord(@Query("useRecordId")int useRecordId,@Query("stopSite")String stopSite,@Query("duration")String duration,@Query("totalMoney")double totalMoney);
+
+    @GET("getSystemTime")
+    Call<ResponseResult<String>> getSystemTime();
 
     class util{
         public util(){

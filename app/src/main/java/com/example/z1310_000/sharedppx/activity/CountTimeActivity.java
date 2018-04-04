@@ -24,6 +24,7 @@ import com.example.z1310_000.sharedppx.request.StopDriveXiaRequest;
 import com.example.z1310_000.sharedppx.service.UseRecordService;
 import com.example.z1310_000.sharedppx.service.UserService;
 import com.example.z1310_000.sharedppx.entity.ResponseResult;
+import com.example.z1310_000.sharedppx.service.UtilService;
 import com.example.z1310_000.sharedppx.service.XiaService;
 import com.example.z1310_000.sharedppx.utils.Tips;
 import com.loopj.android.http.AsyncHttpClient;
@@ -43,6 +44,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CountTimeActivity extends BaseActivity {
+    private static final String TAG = "CountTimeActivity";
     private ActivityCountTimeBinding mBinding;
 
     //声明AMapLocationClient类对象
@@ -54,11 +56,7 @@ public class CountTimeActivity extends BaseActivity {
 
     private UseRecord useRecord;
 
-    private float price;
-
     private double latitude,longitude;
-
-    private User nowUser= DataSupport.findFirst(User.class);
 
     private UserService userService=UserService.util.getUserService();
 
@@ -66,12 +64,16 @@ public class CountTimeActivity extends BaseActivity {
 
     private UseRecordService useRecordService=UseRecordService.util.getUseRecordService();
 
+    private String nowTime;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding= DataBindingUtil.setContentView(this,R.layout.activity_count_time);
         initToolbar("计时页面");
 
+        useRecord= (UseRecord) getIntent().getSerializableExtra("useRecord");
+        nowTime=getIntent().getStringExtra("nowTime");
+        Log.e(TAG, "onCreate: nowTime  IS:"+nowTime);
         initView();
         initData();
         initListener();
@@ -97,13 +99,9 @@ public class CountTimeActivity extends BaseActivity {
     }
 
     private void initData() {
-        useRecord= (UseRecord) getIntent().getSerializableExtra("useRecord");
-
         /*根据前一页面传过来的数据填充*/
-        price = Float.parseFloat(mbundle.getString("price"));
-
         mBinding.xiaId.setText(String.valueOf(useRecord.getxId()));
-        mBinding.xiaPrice.setText(String.valueOf(price));
+        mBinding.xiaPrice.setText(String.valueOf(useRecord.getPrice()));
     }
 
     private void initListener() {
@@ -113,82 +111,6 @@ public class CountTimeActivity extends BaseActivity {
                 //修改当前用户余额
                 //扣款成功才修改订单记录表和虾的状态
                 reduceBalance();
-
-
-
-                AsyncHttpClient changeBalanceClient = new AsyncHttpClient();
-                changeBalanceClient.post(CountTimeActivity.this, changeBalanceRequest.getUrl(), changeBalanceRequest.getStringEntity(uid, nowsum), "application/json", new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        super.onSuccess(statusCode, headers, response);
-                        try {
-                            if(response.getString("result").equals("ok")){
-                                Toast.makeText(getApplicationContext(), "扣款成功", Toast.LENGTH_SHORT).show();
-
-
-                                reduceBalance=true;
-
-                                ChangeXiaStateRequest changeXiaStateRequest = new ChangeXiaStateRequest();
-                                StopDriveXiaRequest stopDriveXiaRequest = new StopDriveXiaRequest();
-
-                                //修改当前虾状态,位置
-                                AsyncHttpClient changeXiaStateClient = new AsyncHttpClient();
-                                changeXiaStateClient.post(CountTimeActivity.this, changeXiaStateRequest.getUrl(), changeXiaStateRequest.getStringEntity(xid, 0,latitude,longitude), "application/json", new JsonHttpResponseHandler() {
-                                    @Override
-                                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                        super.onSuccess(statusCode, headers, response);
-                                        Toast.makeText(getApplicationContext(), "恢复虾状态成功", Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    @Override
-                                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                        super.onFailure(statusCode, headers, responseString, throwable);
-                                        Toast.makeText(getApplicationContext(), "虾状态修改失败", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                });
-
-                                //修改当前订单记录,需要useRecordId,stopTime,stopSite,duration,totalMoney
-                                stopDriveXiaRequest.setUseRecordId(mbundle.getInt("useRecordId"));
-                                //字符串转date型
-                                String startTime = mbundle.getString("startTime");
-
-                                stopDriveXiaRequest.setDuration(countTime.getText().toString());
-                                stopDriveXiaRequest.setStopSite(latitude+","+longitude);
-                                stopDriveXiaRequest.setTotalMoney(Double.parseDouble(sum.getText().toString()));
-                                AsyncHttpClient stopDriveXiaClient = new AsyncHttpClient();
-                                stopDriveXiaClient.post(CountTimeActivity.this, stopDriveXiaRequest.getUrl(), stopDriveXiaRequest.getStringEntity(), "application/json", new JsonHttpResponseHandler() {
-                                    @Override
-                                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                        super.onSuccess(statusCode, headers, response);
-                                        Toast.makeText(getApplicationContext(), "修改订单记录成功", Toast.LENGTH_SHORT).show();
-
-                                    }
-
-                                    @Override
-                                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                                        super.onFailure(statusCode, headers, responseString, throwable);
-                                        Toast.makeText(getApplicationContext(), "修改订单记录失败", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                });
-                            }else{
-                                String errorMsg=response.getString("errorMsg");
-                                Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                        super.onFailure(statusCode, headers, responseString, throwable);
-                    }
-                });
-
-
             }
         });
 
@@ -197,7 +119,7 @@ public class CountTimeActivity extends BaseActivity {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
                 int hour = (int) ((SystemClock.elapsedRealtime() - mBinding.countTime.getBase()) / 1000 / 60);
-                mBinding.sum.setText(String.valueOf((hour) * price));
+                mBinding.sum.setText(String.valueOf((hour) * useRecord.getPrice()));
             }
         });
 
@@ -210,7 +132,9 @@ public class CountTimeActivity extends BaseActivity {
         call.enqueue(new Callback<ResponseResult<Integer>>() {
             @Override
             public void onResponse(Call<ResponseResult<Integer>> call, Response<ResponseResult<Integer>> response) {
+                Log.e(TAG, "onResponse: 扣钱请求的结果是"+response.body() );
                 ResponseResult<Integer> result=response.body();
+
                 //扣款成功
                 if (result.getRet()){
                     //停止计时
@@ -251,7 +175,21 @@ public class CountTimeActivity extends BaseActivity {
 
     //更新使用记录
     private void updateUseRecord(){
-        useRecordService.
+        String stopSite=latitude+","+longitude;
+        String duration=mBinding.countTime.getText().toString();
+        double totalMoney= Double.parseDouble(mBinding.sum.getText().toString());
+        Call<ResponseResult<String>> call= useRecordService.updateUseRecord(useRecord.getId(),stopSite,duration,totalMoney);
+        call.enqueue(new Callback<ResponseResult<String>>() {
+            @Override
+            public void onResponse(Call<ResponseResult<String>> call, Response<ResponseResult<String>> response) {
+                Toast.makeText(CountTimeActivity.this, "结算成功", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResponseResult<String>> call, Throwable t) {
+                Toast.makeText(CountTimeActivity.this, Tips.INTERNET_ERROR_MESSAGE, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
@@ -268,17 +206,34 @@ public class CountTimeActivity extends BaseActivity {
         /*
         * 从服务器返回的开始时间和当前时间，可以计算出经过了多少时间，
         * */
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date ST=sdf.parse(useRecord.getStarttime());
-            Date NT=sdf.parse(mbundle.getString("nowTime"));
-            long baseTime=NT.getTime()-ST.getTime();
-            //设置计时的基准时间为 计算出的经过多久时间开始
-            mBinding.countTime.setBase(SystemClock.elapsedRealtime()-baseTime);
-            mBinding.countTime.start();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        //获取系统时间
+        UseRecordService useRecordService=UseRecordService.util.getUseRecordService();
+        Call<ResponseResult<String>> call=useRecordService.getSystemTime();
+        call.enqueue(new Callback<ResponseResult<String>>() {
+            @Override
+            public void onResponse(Call<ResponseResult<String>> call, Response<ResponseResult<String>> response) {
+                ResponseResult<String> result=response.body();
+                Log.e(TAG, "onResponse: 获取系统时间返回的值是："+result.getData() );
+                nowTime=result.getData();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date ST=sdf.parse(useRecord.getStarttime());
+                    Date NT=sdf.parse(nowTime);
+                    long baseTime=NT.getTime()-ST.getTime();
+                    //设置计时的基准时间为 计算出的经过多久时间开始
+                    mBinding.countTime.setBase(SystemClock.elapsedRealtime()-baseTime);
+                    mBinding.countTime.start();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseResult<String>> call, Throwable t) {
+                Toast.makeText(CountTimeActivity.this, Tips.INTERNET_ERROR_MESSAGE, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void initLocation() {
@@ -337,11 +292,11 @@ public class CountTimeActivity extends BaseActivity {
 
     }
 
-    //进入这个页面需要传递一个bundle,包含useRecordId,startTime,xid,price,nowTime
-    public static void startAction(Context context,UseRecord useRecord){
+
+    //进入这个页面需要传递一个UseRecord对象
+    public static void startAction(final Context context, UseRecord useRecord){
         Intent intent=new Intent(context,CountTimeActivity.class);
         intent.putExtra("useRecord",useRecord);
         context.startActivity(intent);
-
     }
 }
