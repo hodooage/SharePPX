@@ -18,6 +18,9 @@ public interface UseRecordService {
     @GET("getSystemTime")
     Call<ResponseResult<String>> getSystemTime();
 
+    @GET("checkRunningOrder")
+    Call<ResponseResult<UseRecord>> checkRunningOrder(@Query("userId")int userId);
+
     class util{
         public util(){
 

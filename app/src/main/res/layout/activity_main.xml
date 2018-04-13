@@ -6,13 +6,6 @@
     <data>
 
     </data>
-
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        tools:context="com.example.z1310_000.sharedppx.activity.MainActivity">
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -26,15 +19,6 @@
                 android:fitsSystemWindows="true"
                 android:clipToPadding="true">
 
-                <ImageView
-                    android:layout_width="@dimen/x33"
-                    android:layout_height="@dimen/x33"
-                    android:layout_marginTop="@dimen/x4"
-                    android:layout_centerVertical="true"
-                    android:layout_gravity="center"
-                    android:layout_toEndOf="@+id/tips"
-                    android:src="@drawable/xia" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -44,24 +28,23 @@
                     android:text="共享皮皮虾"
                     android:textSize="30dp" />
 
-                <LinearLayout
+                <ImageButton
                     android:id="@+id/tips"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:layout_width="@dimen/x20"
+                    android:layout_height="@dimen/x20"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="fitXY"
+                    android:background="@drawable/mark"
+                    android:visibility="gone"/>
 
-                    <ImageButton
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:background="@drawable/mark" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="当前存在正在骑行的订单，点击进入" />
-                </LinearLayout>
+                <ImageButton
+                    android:layout_width="@dimen/x20"
+                    android:layout_height="@dimen/x20"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:scaleType="fitXY"
+                    android:background="@drawable/xia" />
 
             </RelativeLayout>
 
@@ -195,6 +178,4 @@
 
             </RelativeLayout>
         </RelativeLayout>
-
-    </android.support.constraint.ConstraintLayout>
 </layout>

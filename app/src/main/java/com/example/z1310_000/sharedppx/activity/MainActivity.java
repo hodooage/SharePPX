@@ -1,10 +1,17 @@
 package com.example.z1310_000.sharedppx.activity;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -26,9 +33,16 @@ import com.amap.api.maps.model.animation.Animation;
 import com.amap.api.maps.model.animation.ScaleAnimation;
 import com.example.z1310_000.sharedppx.R;
 import com.example.z1310_000.sharedppx.databinding.ActivityMainBinding;
+import com.example.z1310_000.sharedppx.entity.UseRecord;
+import com.example.z1310_000.sharedppx.entity.User;
 import com.example.z1310_000.sharedppx.entity.Xia;
+import com.example.z1310_000.sharedppx.service.UseRecordService;
 import com.example.z1310_000.sharedppx.service.XiaService;
 import com.example.z1310_000.sharedppx.entity.ResponseResult;
+import com.example.z1310_000.sharedppx.utils.Tips;
+import com.google.gson.Gson;
+
+import org.litepal.crud.DataSupport;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -41,10 +55,14 @@ import retrofit2.Response;
 //监听定位和定位变化
 public class MainActivity extends BaseActivity implements AMapLocationListener {
     private ActivityMainBinding mBinding;
-    private String TAG="MainActivity";
-    private XiaService xiaService=XiaService.util.getXiaService();
+    private String TAG = "MainActivity";
+    private XiaService xiaService = XiaService.util.getXiaService();
 
-    private double nowLng,nowLat;
+    private UseRecordService useRecordService = UseRecordService.util.getUseRecordService();
+
+    private User nowUser = DataSupport.findFirst(User.class);
+
+    private double nowLng, nowLat;
 
     //声明mlocationClient对象
     AMapLocationClient mlocationClient;
@@ -52,6 +70,9 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     AMapLocationClientOption mLocationOption = null;
 
     AMap aMap;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +86,14 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         aMap.setMapType(AMap.MAP_TYPE_NORMAL);
         //显示定位蓝点
         aMap.setMyLocationEnabled(true);
+
+
+
+//        if(granted){
+//            initLoc();
+//        }
         initLoc();
+
         initListener();
         checkOrder();
 
@@ -136,7 +164,7 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         aMap.setOnMarkerClickListener(new AMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Animation animation=new ScaleAnimation(1,1.2f,1,1.2f);
+                Animation animation = new ScaleAnimation(1, 1.2f, 1, 1.2f);
                 marker.setAnimation(animation);
                 marker.startAnimation();
                 return false;
@@ -177,22 +205,22 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
     }
 
     private void initPpx() {
-        Call<ResponseResult<List<Xia>>> call=xiaService.getNearByEnableXia(nowLng,nowLat);
+        Call<ResponseResult<List<Xia>>> call = xiaService.getNearByEnableXia(nowLng, nowLat);
         call.enqueue(new Callback<ResponseResult<List<Xia>>>() {
             @Override
             public void onResponse(Call<ResponseResult<List<Xia>>> call, Response<ResponseResult<List<Xia>>> response) {
-                System.out.println("is ok"+response.body());
-                ResponseResult<List<Xia>> responseResult =response.body();
-                List<Xia> xiaList= responseResult.getData();
-                BitmapDescriptor bitmapDescriptor=BitmapDescriptorFactory.fromResource(R.drawable.xia_marker);
-                for (Xia xia :xiaList){
-                    LatLng latLng = new LatLng(xia.getLatitude(),xia.getLongitude());
+                System.out.println("is ok" + response.body());
+                ResponseResult<List<Xia>> responseResult = response.body();
+                List<Xia> xiaList = responseResult.getData();
+                BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromResource(R.drawable.xia_marker);
+                for (Xia xia : xiaList) {
+                    LatLng latLng = new LatLng(xia.getLatitude(), xia.getLongitude());
                     final Marker marker = aMap.addMarker(new MarkerOptions()
                             .position(latLng).title("皮皮虾")
                             .snippet("DefaultMarker")
                             .icon(bitmapDescriptor)
                     );
-                    Animation animation = new ScaleAnimation(0,1,0,1);
+                    Animation animation = new ScaleAnimation(0, 1, 0, 1);
                     long duration = 1000L;
                     animation.setDuration(duration);
                     animation.setInterpolator(new LinearInterpolator());
@@ -200,8 +228,8 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
                     marker.setAnimation(animation);
                     marker.startAnimation();
 
+                }
             }
-        }
 
             @Override
             public void onFailure(Call<ResponseResult<List<Xia>>> call, Throwable t) {
@@ -216,7 +244,40 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         context.startActivity(intent);
     }
 
+    //检测是否存在正在骑行的订单，存在就让扫码按钮不可用
     private void checkOrder() {
+        Call<ResponseResult<UseRecord>> call = useRecordService.checkRunningOrder(nowUser.getUid());
+
+        call.enqueue(new Callback<ResponseResult<UseRecord>>() {
+            @Override
+            public void onResponse(Call<ResponseResult<UseRecord>> call, Response<ResponseResult<UseRecord>> response) {
+                //返回值为true就说明存在骑行中的订单
+                if (response.body()!=null&&response.body().getRet()) {
+                    final UseRecord useRecord = response.body().getData();
+                    Log.e(TAG, "onResponse: " + useRecord.toString());
+                    mBinding.tips.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            CountTimeActivity.startAction(getApplicationContext(), useRecord);
+                        }
+                    });
+                    mBinding.capture.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(MainActivity.this, "当前存在正在骑行的订单，请点击右上角进入哦~", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    mBinding.tips.setVisibility(View.VISIBLE);
+                    mBinding.capture.setClickable(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseResult<UseRecord>> call, Throwable t) {
+                Log.e(TAG, "onFailure: " + t);
+            }
+        });
+
 
     }
 
@@ -226,19 +287,19 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             if (amapLocation.getErrorCode() == 0) {
                 //定位成功回调信息，设置相关消息
                 amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
-                nowLat=amapLocation.getLatitude();//获取纬度
+                nowLat = amapLocation.getLatitude();//获取纬度
                 //西经在高德地图中用负数表示，因此西经前面要加-号，东经不用
-                nowLng=amapLocation.getLongitude();//获取经度
+                nowLng = amapLocation.getLongitude();//获取经度
                 initPpx();
                 aMap.moveCamera(CameraUpdateFactory
-                        .changeLatLng(new LatLng(amapLocation.getLatitude(),amapLocation.getLongitude())));
+                        .changeLatLng(new LatLng(amapLocation.getLatitude(), amapLocation.getLongitude())));
 
                 aMap.moveCamera(CameraUpdateFactory.zoomTo(19));
                 amapLocation.getAccuracy();//获取精度信息
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date date = new Date(amapLocation.getTime());
                 df.format(date);//定位时间
-                Log.e(TAG, "onLocationChanged: "+amapLocation.toStr() );
+                Log.e(TAG, "onLocationChanged: " + amapLocation.toStr());
             } else {
                 //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
                 Log.e("AmapError", "location Error, ErrCode:"
@@ -247,4 +308,6 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             }
         }
     }
+
+
 }
