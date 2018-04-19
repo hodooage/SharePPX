@@ -60,7 +60,7 @@ public class BaseActivity extends AppCompatActivity {
             close.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    MainActivity.startAction(getApplicationContext());
+                    MainActivity.startAction(view.getContext());
                 }
             });
         }

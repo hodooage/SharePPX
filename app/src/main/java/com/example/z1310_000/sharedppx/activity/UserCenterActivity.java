@@ -126,6 +126,13 @@ public class UserCenterActivity extends BaseActivity {
                 MyServiceActivity.startAction(UserCenterActivity.this);
             }
         });
+
+        mBinding.myRouter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    MyUseRecordActivity.startAction(UserCenterActivity.this);
+            }
+        });
     }
 
     public static  void startAction(Context context){

@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
+
     <application
         android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
@@ -69,7 +70,24 @@
         <activity android:name=".activity.MyServiceActivity" />
         <activity android:name=".activity.TestActivity" />
         <activity android:name=".activity.TestAmapActivity" />
-        <activity android:name=".activity.MyUseRecord"></activity>
+        <activity android:name=".activity.MyUseRecordActivity"/>
+        <activity android:name=".activity.H5PayDemoActivity"/>
+        <activity android:name=".activity.PayDemoActivity"/>
+
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
     </application>
 
 </manifest>

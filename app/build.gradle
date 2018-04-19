@@ -5,7 +5,10 @@ android {
         zwj {
             keyAlias 'mykey'
             keyPassword 'zwj210zwj'
-            storeFile file('C:/Users/z1310_000/Desktop/mmm/SharePPX-APP/mykeystore.jks')
+//            笔记本的签名文件地址
+//           storeFile file('C:/Users/z1310_000/Desktop/mmm/SharePPX-APP/mykeystore.jks')
+            //台式机的签名文件地址
+            storeFile file('D:/Personal/Desktop/design/SharePPX/mykeystore.jks')
             storePassword 'zwj210zwj'
         }
     }
@@ -47,15 +50,11 @@ dependencies {
     })
     implementation files('libs/AMap3DMap_5.3.0_AMapNavi_5.3.0_AMapSearch_5.3.1_AMapLocation_3.5.0_20170817.jar')
     implementation files('libs/core-3.1.0.jar')
-
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:26.1.0'
-
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-
     implementation 'org.litepal.android:core:1.6.0'
-
     implementation 'com.squareup.retrofit2:retrofit:2.0.2'
     // Retrofit库
     implementation 'com.squareup.okhttp3:okhttp:3.1.2'
@@ -67,8 +66,8 @@ dependencies {
     //图片选择库
     implementation 'com.lzy.widget:imagepicker:0.6.1'
     //图片加载库
-    implementation "com.github.bumptech.glide:glide:4.3.1"
-
+    implementation 'com.github.bumptech.glide:glide:4.3.1'
+    implementation files('libs/alipaySdk-20180403.jar')
 }
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"

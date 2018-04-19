@@ -4,6 +4,8 @@ import com.example.z1310_000.sharedppx.entity.UseRecord;
 import com.example.z1310_000.sharedppx.entity.ResponseResult;
 import com.example.z1310_000.sharedppx.utils.RetrofitUtil;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -20,6 +22,9 @@ public interface UseRecordService {
 
     @GET("checkRunningOrder")
     Call<ResponseResult<UseRecord>> checkRunningOrder(@Query("userId")int userId);
+
+    @GET("getUseRecordByUserId")
+    Call<ResponseResult<List<UseRecord>>> getUseRecordByUserId(@Query("userId")int userId);
 
     class util{
         public util(){

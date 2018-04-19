@@ -2,9 +2,11 @@ package com.example.z1310_000.sharedppx.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.alipay.sdk.app.PayTask;
 import com.example.z1310_000.sharedppx.R;
 
 public class RegisterActivity extends BaseActivity {
