@@ -128,12 +128,12 @@ public class CountTimeActivity extends BaseActivity {
     private void reduceBalance(){
         double totalMoney=Double.parseDouble(String.valueOf(mBinding.sum.getText()));
 
-        Call<ResponseResult<Integer>> call= userService.reduceBalance(useRecord.getuId(),totalMoney);
-        call.enqueue(new Callback<ResponseResult<Integer>>() {
+        Call<ResponseResult<String>> call= userService.reduceBalance(useRecord.getuId(),totalMoney);
+        call.enqueue(new Callback<ResponseResult<String>>() {
             @Override
-            public void onResponse(Call<ResponseResult<Integer>> call, Response<ResponseResult<Integer>> response) {
+            public void onResponse(Call<ResponseResult<String>> call, Response<ResponseResult<String>> response) {
                 Log.e(TAG, "onResponse: 扣钱请求的结果是"+response.body() );
-                ResponseResult<Integer> result=response.body();
+                ResponseResult<String> result=response.body();
 
                 //扣款成功
                 if (result.getRet()){
@@ -145,12 +145,13 @@ public class CountTimeActivity extends BaseActivity {
                     updateUseRecord();
                 }//扣款失败
                 else{
-                    Toast.makeText(CountTimeActivity.this, result.getData(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CountTimeActivity.this, result.getData().toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseResult<Integer>> call, Throwable t) {
+            public void onFailure(Call<ResponseResult<String>> call, Throwable t) {
+                Log.e(TAG, "onFailure: "+t );
                 Toast.makeText(CountTimeActivity.this, Tips.INTERNET_ERROR_MESSAGE, Toast.LENGTH_SHORT).show();
             }
         });

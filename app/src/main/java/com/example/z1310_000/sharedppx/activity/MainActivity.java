@@ -133,8 +133,9 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         mBinding.alert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent toAlert = new Intent(MainActivity.this, AlertActivity.class);
-                startActivity(toAlert);
+//                Intent toAlert = new Intent(MainActivity.this, AlertActivity.class);
+//                startActivity(toAlert);
+                CreateXiaByLocal();
             }
         });
 
@@ -171,6 +172,21 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
             }
         });
 
+    }
+
+    private void CreateXiaByLocal(){
+        Call<String> call=xiaService.randomCreateXia(nowLng,nowLat);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Toast.makeText(MainActivity.this, "在附近生成了50只皮皮虾", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e(TAG, "onFailure: "+t );
+            }
+        });
     }
 
 

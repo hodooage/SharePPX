@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingTop="12dp" >
-   
+
         <Button
             android:id="@+id/payV2"
             android:layout_width="fill_parent"
