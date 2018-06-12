@@ -6,9 +6,9 @@ android {
             keyAlias 'mykey'
             keyPassword 'zwj210zwj'
 //            笔记本的签名文件地址
-//           storeFile file('C:/Users/z1310_000/Desktop/mmm/SharePPX-APP/mykeystore.jks')
+           storeFile file('C:/Users/z1310_000/Desktop/mmm/SharePPX-APP/mykeystore.jks')
             //台式机的签名文件地址
-            storeFile file('D:/Personal/Desktop/design/SharePPX/mykeystore.jks')
+            //storeFile file('D:/Personal/Desktop/design/SharePPX/mykeystore.jks')
             storePassword 'zwj210zwj'
         }
     }

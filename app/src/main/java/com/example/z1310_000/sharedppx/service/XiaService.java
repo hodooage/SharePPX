@@ -23,6 +23,8 @@ public interface XiaService {
     @GET("stopXiaById")
     Call<ResponseResult<String>> stopXiaById(@Query("xiaId") int xiaId);
 
+    @GET("randomCreateXia")
+    Call<String> randomCreateXia(@Query("lng")double lng,@Query("lat")double lat);
 
 
     class util{

@@ -42,7 +42,7 @@ public interface UserService {
     Call<ResponseResult<Integer>> editUserInformation(@Body User user);
 
     @GET("reduceUserBalance")
-    Call<ResponseResult<Integer>> reduceBalance(@Query("userId")int userId,@Query("totalMoney")double totalMoney);
+    Call<ResponseResult<String>> reduceBalance(@Query("userId")int userId,@Query("totalMoney")double totalMoney);
 
     @GET("addUserBalance")
     Call<ResponseResult<Integer>> addBalance(@Query("userId")int userId,@Query("totalMoney")double totalMoney);
