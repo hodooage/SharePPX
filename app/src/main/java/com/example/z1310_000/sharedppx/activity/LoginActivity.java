@@ -184,7 +184,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-
     public static void startAction(Context context){
         Intent intent=new Intent(context,LoginActivity.class);
         context.startActivity(intent);

@@ -23,10 +23,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
                     android:layout_gravity="center"
                     android:text="共享皮皮虾"
-                    android:textSize="30dp" />
+                    android:textSize="@dimen/x12" />
 
                 <ImageButton
                     android:id="@+id/tips"

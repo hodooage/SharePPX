@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/returnLast"
             android:layout_centerHorizontal="true"
-            android:textSize="@dimen/x12" />
+            android:textSize="@dimen/x12"/>
 
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

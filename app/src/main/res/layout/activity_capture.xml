@@ -94,7 +94,8 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/capture_mask_bottom"
                 android:layout_centerHorizontal="true"
-                android:text="测试按钮" />
+                android:text="测试按钮"
+                android:visibility="gone" />
         </RelativeLayout>
 
     </RelativeLayout>

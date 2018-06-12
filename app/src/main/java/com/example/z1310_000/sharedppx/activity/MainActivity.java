@@ -87,21 +87,10 @@ public class MainActivity extends BaseActivity implements AMapLocationListener {
         //显示定位蓝点
         aMap.setMyLocationEnabled(true);
 
-
-
-//        if(granted){
-//            initLoc();
-//        }
         initLoc();
 
         initListener();
         checkOrder();
-
-    }
-
-
-    //初始化界面,给按钮注册监听事件
-    private void initView() {
 
     }
 

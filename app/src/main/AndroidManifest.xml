@@ -13,7 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-
+    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
 
     <application
         android:name="org.litepal.LitePalApplication"
@@ -24,11 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity android:name=".activity.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activity.AlertActivity" />
         <activity android:name=".activity.MainActivity" />
@@ -70,23 +66,30 @@
         <activity android:name=".activity.MyServiceActivity" />
         <activity android:name=".activity.TestActivity" />
         <activity android:name=".activity.TestAmapActivity" />
-        <activity android:name=".activity.MyUseRecordActivity"/>
-        <activity android:name=".activity.H5PayDemoActivity"/>
-        <activity android:name=".activity.PayDemoActivity"/>
-
+        <activity android:name=".activity.MyUseRecordActivity" />
+        <activity android:name=".activity.H5PayDemoActivity" />
+        <activity android:name=".activity.PayDemoActivity" />
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
         <activity
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden" >
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/AppTheme.Full">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 
